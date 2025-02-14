@@ -1,4 +1,483 @@
-int
-<strong>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Python & Data Science Notes</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      line-height: 1.6;
+      margin: 20px;
+      max-width: 900px;
+    }
+    h1, h2, h3, h4 {
+      color: #333;
+    }
+    pre {
+      background: #f4f4f4;
+      padding: 10px;
+      border: 1px solid #ddd;
+      overflow-x: auto;
+    }
+    code {
+      font-family: Consolas, Monaco, "Andale Mono", "Ubuntu Mono", monospace;
+    }
+    .section {
+      margin-bottom: 40px;
+    }
+    .subsection {
+      margin-bottom: 20px;
+    }
+    ul {
+      margin-top: 0;
+    }
+  </style>
+</head>
+<body>
+  <h1>Python & Data Science Notes</h1>
+
+  <!-- 1. Python Data Structures -->
+  <div class="section" id="data-structures">
+    <h2>1. Python Data Structures</h2>
+
+    <!-- 1.1 List -->
+    <div class="subsection" id="list">
+      <h3>1.1 List</h3>
+      <p><strong>Creation:</strong></p>
+      <pre><code>my_list = [1, 2, 3]</code></pre>
+      <p><strong>Common Operations:</strong></p>
+      <pre><code>my_list.append(4)         # Adds 4 at the end
+my_list.insert(1, 5)      # Inserts 5 at index 1
+my_list.remove(2)         # Removes first occurrence of 2
+popped = my_list.pop()    # Removes and returns last item (or pop(index))
+my_list.index(5)          # Returns index of first occurrence of 5
+len(my_list)              # Length of the list</code></pre>
+      <p><strong>Slicing:</strong></p>
+      <pre><code>my_list[start:end:step]   # Ex: my_list[1:3] returns items from index 1 to 2</code></pre>
+      <p><strong>List Comprehension:</strong></p>
+      <pre><code>squares = [x**2 for x in range(10)]
+evens  = [x for x in range(20) if x % 2 == 0]</code></pre>
+    </div>
+
+    <!-- 1.2 Tuple -->
+    <div class="subsection" id="tuple">
+      <h3>1.2 Tuple</h3>
+      <p><strong>Creation:</strong></p>
+      <pre><code>my_tuple = (1, 2, 3)</code></pre>
+      <p>Tuples are <strong>immutable</strong> (cannot be changed once created).</p>
+    </div>
+
+    <!-- 1.3 Dictionary -->
+    <div class="subsection" id="dictionary">
+      <h3>1.3 Dictionary</h3>
+      <p><strong>Creation:</strong></p>
+      <pre><code>my_dict = {
+    "name": "Alice",
+    "age": 25,
+    "city": "New York"
+}</code></pre>
+      <p><strong>Common Operations:</strong></p>
+      <pre><code>my_dict["country"] = "USA"        # Add new key-value
+my_dict["name"] = "Bob"           # Update existing key
+del my_dict["age"]                # Delete a key
+my_dict.get("name", "Unknown")    # Get value with default
+my_dict.keys(), my_dict.values(), my_dict.items()</code></pre>
+    </div>
+
+    <!-- 1.4 Set -->
+    <div class="subsection" id="set">
+      <h3>1.4 Set</h3>
+      <p><strong>Creation:</strong></p>
+      <pre><code>my_set = {1, 2, 3, 4}
+my_set_2 = set([3, 4, 5, 6])</code></pre>
+      <p><strong>Common Operations:</strong></p>
+      <pre><code>my_set.add(5)            # Add an element
+my_set.remove(2)         # Remove element
+union_set = my_set | my_set_2
+inter_set = my_set & my_set_2
+diff_set = my_set - my_set_2</code></pre>
+      <p><strong>Properties:</strong></p>
+      <ul>
+        <li>No duplicate elements</li>
+        <li>Unordered collection</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- 2. Python Basics -->
+  <div class="section" id="python-basics">
+    <h2>2. Python Basics</h2>
+
+    <!-- 2.1 Variables & Data Types -->
+    <div class="subsection" id="variables">
+      <h3>2.1 Variables & Data Types</h3>
+      <pre><code>a = 10                  # int
+b = 10.5                # float
+c = "Hello"             # str
+d = True                # bool</code></pre>
+    </div>
+
+    <!-- 2.2 Conditional Statements -->
+    <div class="subsection" id="conditionals">
+      <h3>2.2 Conditional Statements</h3>
+      <pre><code>if condition:
+    # block of code
+elif another_condition:
+    # block of code
+else:
+    # block of code</code></pre>
+    </div>
+
+    <!-- 2.3 Loops -->
+    <div class="subsection" id="loops">
+      <h3>2.3 Loops</h3>
+      <p><strong>for Loop:</strong></p>
+      <pre><code>for i in range(5):
+    print(i)
+
+for item in [1,2,3]:
+    print(item)</code></pre>
+      <p><strong>while Loop:</strong></p>
+      <pre><code>x = 0
+while x < 5:
+    print(x)
+    x += 1</code></pre>
+    </div>
+
+    <!-- 2.4 Functions -->
+    <div class="subsection" id="functions">
+      <h3>2.4 Functions</h3>
+      <pre><code>def my_function(param1, param2="default"):
+    """Docstring: describe function usage."""
+    return param1 + param2
+
+result = my_function(10, 5)</code></pre>
+    </div>
+
+    <!-- 2.5 Classes -->
+    <div class="subsection" id="classes">
+      <h3>2.5 Classes</h3>
+      <pre><code>class MyClass:
+    class_attribute = "some value"
     
-</strong>
+    def __init__(self, name):
+        self.name = name
+        
+    def method(self):
+        print(f"My name is {self.name}")
+        
+# Usage
+obj = MyClass("Alice")
+obj.method()  # Output: My name is Alice</code></pre>
+    </div>
+
+    <!-- 2.6 Error & Exception Handling -->
+    <div class="subsection" id="exceptions">
+      <h3>2.6 Error &amp; Exception Handling</h3>
+      <pre><code>try:
+    1 / 0
+except ZeroDivisionError as e:
+    print("Cannot divide by zero!", e)
+finally:
+    print("This block always executes.")</code></pre>
+    </div>
+
+    <!-- 2.7 Basic I/O -->
+    <div class="subsection" id="io">
+      <h3>2.7 Basic I/O</h3>
+      <pre><code># Input
+user_input = input("Enter something: ")
+
+# Output
+print("You entered:", user_input)</code></pre>
+    </div>
+
+    <!-- 2.8 Importing Modules -->
+    <div class="subsection" id="imports">
+      <h3>2.8 Importing Modules</h3>
+      <pre><code>import math
+print(math.sqrt(16))  # 4.0
+
+from math import sqrt
+print(sqrt(25))       # 5.0</code></pre>
+    </div>
+  </div>
+
+  <!-- 3. Pandas for Data Wrangling -->
+  <div class="section" id="pandas">
+    <h2>3. Pandas for Data Wrangling</h2>
+
+    <!-- 3.1 Import & Basic Setup -->
+    <div class="subsection" id="pandas-setup">
+      <h3>3.1 Import &amp; Basic Setup</h3>
+      <pre><code>import pandas as pd</code></pre>
+    </div>
+
+    <!-- 3.2 Creating a DataFrame -->
+    <div class="subsection" id="create-dataframe">
+      <h3>3.2 Creating a DataFrame</h3>
+      <pre><code>df = pd.DataFrame({
+    "A": [1, 2, 3],
+    "B": [4, 5, 6]
+})
+print(df)</code></pre>
+    </div>
+
+    <!-- 3.3 Reading Data -->
+    <div class="subsection" id="reading-data">
+      <h3>3.3 Reading Data</h3>
+      <pre><code>df = pd.read_csv("path/to/file.csv")
+df = pd.read_excel("path/to/file.xlsx", sheet_name="Sheet1")</code></pre>
+    </div>
+
+    <!-- 3.4 Viewing Data -->
+    <div class="subsection" id="viewing-data">
+      <h3>3.4 Viewing Data</h3>
+      <pre><code>df.head()           # First 5 rows
+df.tail()           # Last 5 rows
+df.info()           # Summary of DataFrame
+df.describe()       # Statistical summary</code></pre>
+    </div>
+
+    <!-- 3.5 Selecting & Filtering -->
+    <div class="subsection" id="select-filter">
+      <h3>3.5 Selecting &amp; Filtering</h3>
+      <pre><code># Selecting Columns
+df["A"]                # returns a Series
+df[["A", "B"]]         # returns a DataFrame
+
+# Filtering Rows
+df[df["A"] > 1]
+df.loc[0:2, "A":"B"]   # label-based slicing
+df.iloc[0:2, 0:2]      # integer-based slicing</code></pre>
+    </div>
+
+    <!-- 3.6 Data Cleaning & Transformation -->
+    <div class="subsection" id="data-cleaning">
+      <h3>3.6 Data Cleaning &amp; Transformation</h3>
+      <pre><code>df.dropna()                    # Drop rows with any NaN values
+df.fillna(0)                   # Replace NaN with 0
+df.drop(columns=["ColumnName"])
+df.rename(columns={"A":"NewA"})
+df["A"] = df["A"].astype(float)  # Convert data type
+df["new_col"] = df["A"] * 2      # Create/Update columns</code></pre>
+    </div>
+
+    <!-- 3.7 Grouping & Aggregation -->
+    <div class="subsection" id="grouping">
+      <h3>3.7 Grouping &amp; Aggregation</h3>
+      <pre><code>df.groupby("A")["B"].mean()
+df.groupby("A").agg({"B": "sum", "C": "mean"})</code></pre>
+    </div>
+
+    <!-- 3.8 Merging / Joining -->
+    <div class="subsection" id="merging">
+      <h3>3.8 Merging / Joining</h3>
+      <pre><code>df_merged = pd.merge(df1, df2, on="key_column", how="inner")
+df_concat = pd.concat([df1, df2], axis=0)   # Stack rows</code></pre>
+    </div>
+  </div>
+
+  <!-- 4. Matplotlib for Basic Statistics Plots -->
+  <div class="section" id="matplotlib">
+    <h2>4. Matplotlib for Basic Statistics Plots</h2>
+
+    <!-- 4.1 Basic Setup -->
+    <div class="subsection" id="mpl-setup">
+      <h3>4.1 Basic Setup</h3>
+      <pre><code>import matplotlib.pyplot as plt</code></pre>
+    </div>
+
+    <!-- 4.2 Basic Plot -->
+    <div class="subsection" id="basic-plot">
+      <h3>4.2 Basic Plot</h3>
+      <pre><code>plt.plot([1, 2, 3], [4, 5, 6])
+plt.title("Line Plot")
+plt.xlabel("X-axis")
+plt.ylabel("Y-axis")
+plt.show()</code></pre>
+    </div>
+
+    <!-- 4.3 Histogram -->
+    <div class="subsection" id="histogram">
+      <h3>4.3 Histogram</h3>
+      <pre><code>import numpy as np
+
+data = np.random.randn(1000)
+plt.hist(data, bins=30)
+plt.title("Histogram")
+plt.show()</code></pre>
+    </div>
+
+    <!-- 4.4 Scatter Plot -->
+    <div class="subsection" id="scatter">
+      <h3>4.4 Scatter Plot</h3>
+      <pre><code>x = [1,2,3,4]
+y = [10,20,25,30]
+plt.scatter(x, y, c='red', marker='o')
+plt.title("Scatter Plot")
+plt.show()</code></pre>
+    </div>
+
+    <!-- 4.5 Bar Plot -->
+    <div class="subsection" id="bar">
+      <h3>4.5 Bar Plot</h3>
+      <pre><code>labels = ['A', 'B', 'C']
+values = [10, 20, 15]
+
+plt.bar(labels, values)
+plt.title("Bar Plot")
+plt.show()</code></pre>
+    </div>
+
+    <!-- 4.6 Subplots -->
+    <div class="subsection" id="subplots">
+      <h3>4.6 Subplots</h3>
+      <pre><code>fig, axes = plt.subplots(nrows=1, ncols=2, figsize=(10, 4))
+
+axes[0].plot(x, y)
+axes[0].set_title("Plot 1")
+
+axes[1].hist(data, bins=20)
+axes[1].set_title("Plot 2")
+
+plt.tight_layout()
+plt.show()</code></pre>
+    </div>
+  </div>
+
+  <!-- 5. Scikit-Learn for Machine Learning -->
+  <div class="section" id="scikit-learn">
+    <h2>5. Scikit-Learn for Machine Learning</h2>
+
+    <!-- 5.1 Basic Workflow -->
+    <div class="subsection" id="basic-workflow">
+      <h3>5.1 Basic Workflow</h3>
+      <p><strong>Import Libraries:</strong></p>
+      <pre><code>from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import StandardScaler
+from sklearn.linear_model import LogisticRegression
+from sklearn.metrics import accuracy_score</code></pre>
+      
+      <p><strong>Load Data:</strong></p>
+      <pre><code># Suppose you have a pandas DataFrame df with features and target
+X = df.drop("target", axis=1)
+y = df["target"]</code></pre>
+      
+      <p><strong>Split Data:</strong></p>
+      <pre><code>X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)</code></pre>
+      
+      <p><strong>Feature Scaling (optional but often helpful):</strong></p>
+      <pre><code>scaler = StandardScaler()
+X_train_scaled = scaler.fit_transform(X_train)
+X_test_scaled = scaler.transform(X_test)</code></pre>
+      
+      <p><strong>Train Model:</strong></p>
+      <pre><code>model = LogisticRegression()
+model.fit(X_train_scaled, y_train)</code></pre>
+      
+      <p><strong>Predict &amp; Evaluate:</strong></p>
+      <pre><code>y_pred = model.predict(X_test_scaled)
+acc = accuracy_score(y_test, y_pred)
+print("Accuracy:", acc)</code></pre>
+    </div>
+
+    <!-- 5.2 Other Common Models -->
+    <div class="subsection" id="other-models">
+      <h3>5.2 Other Common Models</h3>
+      <pre><code>from sklearn.ensemble import RandomForestClassifier
+from sklearn.svm import SVC
+from sklearn.neighbors import KNeighborsClassifier
+# Usage:
+# model = RandomForestClassifier().fit(X_train, y_train)</code></pre>
+    </div>
+
+    <!-- 5.3 Cross-Validation & Grid Search -->
+    <div class="subsection" id="cv-gridsearch">
+      <h3>5.3 Cross-Validation &amp; Grid Search</h3>
+      <pre><code>from sklearn.model_selection import cross_val_score, GridSearchCV
+
+# Cross validation
+scores = cross_val_score(model, X, y, cv=5)
+
+# Grid Search
+param_grid = {'n_estimators': [50, 100]}
+grid = GridSearchCV(RandomForestClassifier(), param_grid, cv=5)
+grid.fit(X_train, y_train)
+best_model = grid.best_estimator_</code></pre>
+    </div>
+  </div>
+
+  <!-- 6. ANN (Artificial Neural Networks) -->
+  <div class="section" id="ann">
+    <h2>6. ANN (Artificial Neural Networks)</h2>
+
+    <!-- 6.1 Basic Libraries -->
+    <div class="subsection" id="ann-libraries">
+      <h3>6.1 Basic Libraries</h3>
+      <pre><code>import tensorflow as tf
+from tensorflow import keras
+from tensorflow.keras import layers</code></pre>
+    </div>
+
+    <!-- 6.2 Basic Neural Network Structure -->
+    <div class="subsection" id="ann-structure">
+      <h3>6.2 Basic Neural Network Structure</h3>
+      <p><strong>Define Model:</strong></p>
+      <pre><code>model = keras.Sequential([
+    layers.Dense(64, activation='relu', input_shape=(input_dim,)),
+    layers.Dense(64, activation='relu'),
+    layers.Dense(1, activation='sigmoid')  # Example for binary classification
+])</code></pre>
+      
+      <p><strong>Compile Model:</strong></p>
+      <pre><code>model.compile(optimizer='adam',
+              loss='binary_crossentropy',
+              metrics=['accuracy'])</code></pre>
+      
+      <p><strong>Train Model:</strong></p>
+      <pre><code>history = model.fit(X_train, y_train,
+                    epochs=10,
+                    batch_size=32,
+                    validation_split=0.2)</code></pre>
+      
+      <p><strong>Evaluate Model:</strong></p>
+      <pre><code>loss, accuracy = model.evaluate(X_test, y_test)
+print("Test Loss:", loss)
+print("Test Accuracy:", accuracy)</code></pre>
+      
+      <p><strong>Make Predictions:</strong></p>
+      <pre><code>predictions = model.predict(X_test)</code></pre>
+    </div>
+
+    <!-- 6.3 Common Tips -->
+    <div class="subsection" id="ann-tips">
+      <h3>6.3 Common Tips</h3>
+      <ul>
+        <li>Activation Functions: <code>relu</code>, <code>sigmoid</code>, <code>softmax</code>, <code>tanh</code></li>
+        <li>Optimizers: <code>adam</code>, <code>sgd</code>, <code>rmsprop</code></li>
+        <li>Loss Functions: <code>binary_crossentropy</code>, <code>categorical_crossentropy</code>, <code>mean_squared_error</code> (for regression)</li>
+        <li>Regularization: Use <code>Dropout</code> layers, <code>BatchNormalization</code> to reduce overfitting.</li>
+      </ul>
+      <p><strong>Example: Dropout &amp; Early Stopping</strong></p>
+      <pre><code>layers.Dropout(0.5)
+
+early_stop = keras.callbacks.EarlyStopping(patience=3)
+model.fit(X_train, y_train, epochs=100, callbacks=[early_stop])</code></pre>
+    </div>
+  </div>
+
+  <!-- Quick Reference Summary -->
+  <div class="section" id="summary">
+    <h2>Quick Reference Summary</h2>
+    <ul>
+      <li><strong>Data Structures:</strong> List (append, pop, remove, slicing, list comprehension), Dict ({key: value}, .get(), .keys(), .values(), .items()), Tuple (immutable sequence), Set (unique elements, union (|), intersection (&), difference (-))</li>
+      <li><strong>Python Basics:</strong> Conditionals (if-elif-else), loops (for, while), try-except-finally, functions, classes, modules/imports, I/O (input(), print())</li>
+      <li><strong>Pandas:</strong> pd.DataFrame(), pd.read_csv(), df.head(), df.describe(), slicing (df.loc, df.iloc), df.groupby(), df.agg(), pd.merge(), pd.concat(), data cleaning (dropna, fillna, astype)</li>
+      <li><strong>Matplotlib:</strong> Basic plots (plot, scatter, bar, hist), plt.title(), plt.xlabel(), plt.ylabel(), plt.show(), subplots (plt.subplots), figure customization</li>
+      <li><strong>Scikit-Learn:</strong> Data splitting (train_test_split), scaling (StandardScaler), model fitting, predicting, evaluating (accuracy_score), common models (LogisticRegression, RandomForestClassifier, SVC, KNeighborsClassifier), cross-validation (cross_val_score), hyperparameter tuning (GridSearchCV)</li>
+      <li><strong>ANN:</strong> Using Keras: define layers (<code>Dense</code>), compile (model.compile), train (model.fit), evaluate (model.evaluate), predict (model.predict); activations, optimizers, and regularization techniques (Dropout, early stopping)</li>
+    </ul>
+  </div>
+</body>
+</html>

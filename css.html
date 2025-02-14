@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CSS Fundamentals</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+        h1, h2 {
+            color: #333;
+        }
+        .content {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .example {
+            background: #eee;
+            padding: 10px;
+            border-left: 5px solid #333;
+            font-family: monospace;
+        }
+    </style>
+</head>
+<body>
+    <h1>CSS Fundamentals</h1>
+    <div class="content">
+        <h2>What is CSS?</h2>
+        <p>CSS (Cascading Style Sheets) is used to style and layout web pages.</p>
+        
+        <h2>Basic CSS Syntax</h2>
+        <div class="example">
+            selector {
+                property: value;
+            }
+        </div>
+        
+        <h2>Beginner Level CSS</h2>
+        <ul>
+            <li>Selectors and Properties</li>
+            <div class="example">
+                p {
+                    color: red;
+                }
+            </div>
+            <li>Colors and Backgrounds</li>
+            <div class="example">
+                body {
+                    background-color: lightblue;
+                }
+            </div>
+            <li>Font Styling</li>
+            <div class="example">
+                h1 {
+                    font-family: Arial, sans-serif;
+                }
+            </div>
+            <li>Box Model</li>
+            <div class="example">
+                div {
+                    margin: 10px;
+                    padding: 15px;
+                    border: 2px solid black;
+                }
+            </div>
+        </ul>
+        
+        <h2>Intermediate Level CSS</h2>
+        <ul>
+            <li>Flexbox Layout</li>
+            <div class="example">
+                .container {
+                    display: flex;
+                    justify-content: center;
+                }
+            </div>
+            <li>Grid Layout</li>
+            <div class="example">
+                .grid-container {
+                    display: grid;
+                    grid-template-columns: 1fr 1fr;
+                }
+            </div>
+            <li>Positioning Elements</li>
+            <div class="example">
+                .box {
+                    position: absolute;
+                    top: 50px;
+                    left: 100px;
+                }
+            </div>
+            <li>Transitions and Animations</li>
+            <div class="example">
+                .button {
+                    transition: background-color 0.3s ease;
+                }
+            </div>
+        </ul>
+        
+        <h2>Advanced Level CSS</h2>
+        <ul>
+            <li>CSS Variables</li>
+            <div class="example">
+                :root {
+                    --main-color: blue;
+                }
+                p {
+                    color: var(--main-color);
+                }
+            </div>
+            <li>Advanced Selectors</li>
+            <div class="example">
+                p:first-child {
+                    font-weight: bold;
+                }
+            </div>
+            <li>Responsive Design</li>
+            <div class="example">
+                @media (max-width: 600px) {
+                    body {
+                        background-color: grey;
+                    }
+                }
+            </div>
+            <li>CSS Frameworks</li>
+            <p>Popular CSS frameworks include Bootstrap, Tailwind CSS, and Foundation.</p>
+        </ul>
+        
+        <h2>Example</h2>
+        <p>The following CSS styles a paragraph:</p>
+        <div class="example">
+            p {
+                color: blue;
+                font-size: 16px;
+            }
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,61 @@
+git init (inside the folder where you have your project)
+git status
+git add .
+git commit -m "Initial commit"
+
+
+brew install gh
+gh --version
+gh auth login (HTTP - every time id pwd required v/s SSH - secure shell)
+
+Where do you use GitHub? GitHub.com
+? What is your preferred protocol for Git operations on this host? SSH
+? Generate a new SSH key to add to your GitHub account? Yes
+? Enter a passphrase for your new SSH key (Optional): 
+
+If You Use a Passphrase
+If you enter a passphrase, you'll need to unlock the key every time you use Git. You can make this easier by caching it:
+
+sh
+eval "$(ssh-agent -s)"
+ssh-add ~/.ssh/id_rsa
+This stores your passphrase in memory, so you don’t have to enter it repeatedly.
+
+Where do you use GitHub? GitHub.com
+? What is your preferred protocol for Git operations on this host? SSH
+? Generate a new SSH key to add to your GitHub account? Yes
+? Enter a passphrase for your new SSH key (Optional): 
+? Title for your SSH key: (GitHub CLI) 
+
+
+gh repo create next-gen-learning --public --source=. --push
+
+git remote add origin git@github.com:agocharoo/next-gen-learning.git
+
+git remote -v
+
+git branch -M main
+git push -u origin main
+
+- You are all Set!
+- Anytime you make changes just do
+git add .
+git commit -m "Update"
+git push
+
+
+FAQ
+🔹 What does -u origin main do?
+It sets up a tracking connection between your local main branch and the remote main branch on GitHub.
+After this, when you run git push or git pull, Git knows which remote branch to sync with by default.
+After running git push -u origin main once, you can simply use git push for future updates.
+
+
+🛠 What Happens Here?
+git branch -M main  # Renames the current branch to 'main'
+By default, Git used to name the first branch master. However, many repositories now use main as the default branch instead.
+git branch -M main  # Renames the current branch to 'main'
+This ensures your main development branch is named main, not master or something else.
+If GitHub expects a main branch and yours is named master, GitHub won’t recognize it, and pushing will fail.
+After renaming your branch, you push it with:
+git push -u origin main

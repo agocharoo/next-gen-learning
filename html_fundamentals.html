@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HTML Fundamentals</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; line-height: 1.6; }
+        h1, h2, h3 { color: darkblue; }
+        code { background: #f4f4f4; padding: 2px 5px; border-radius: 3px; }
+        pre { background: #f4f4f4; padding: 10px; border-radius: 5px; overflow-x: auto; }
+    </style>
+</head>
+<body>
+    <h1>Fundamental Concepts of HTML</h1>
+    <p>HTML (HyperText Markup Language) is the standard language used to create and design webpages. It provides the basic structure for web content by using elements and tags.</p>
+
+    <h2>1. HTML Elements and Tags</h2>
+    <p>HTML documents are made up of elements, which are represented by tags. Tags are enclosed in angle brackets (< >), and most have an opening tag and a closing tag.</p>
+
+    <h2>2. Basic Structure of an HTML Document</h2>
+    <pre><code>&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+    &lt;title&gt;My First Web Page&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;h1&gt;Welcome to HTML&lt;/h1&gt;
+    &lt;p&gt;This is a basic paragraph.&lt;/p&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+    </code></pre>
+
+    <h2>3. Common HTML Elements</h2>
+    <p>Some commonly used elements in HTML include:</p>
+    <ul>
+        <li>Headings: <code>&lt;h1&gt;</code> to <code>&lt;h6&gt;</code></li>
+        <li>Paragraphs: <code>&lt;p&gt;</code></li>
+        <li>Links: <code>&lt;a href="https://example.com"&gt;Click here&lt;/a&gt;</code></li>
+        <li>Images: <code>&lt;img src="image.jpg" alt="Description"&gt;</code></li>
+        <li>Lists:
+            <ul>
+                <li>Ordered List:
+                    <pre><code>&lt;ol&gt;
+    &lt;li&gt;Item 1&lt;/li&gt;
+    &lt;li&gt;Item 2&lt;/li&gt;
+&lt;/ol&gt;</code></pre>
+                </li>
+                <li>Unordered List:
+                    <pre><code>&lt;ul&gt;
+    &lt;li&gt;Item A&lt;/li&gt;
+    &lt;li&gt;Item B&lt;/li&gt;
+&lt;/ul&gt;</code></pre>
+                </li>
+            </ul>
+        </li>
+    </ul>
+
+    <h2>4. Attributes</h2>
+    <p>HTML elements can have attributes that provide additional information. Example:</p>
+    <pre><code>&lt;a href="https://example.com" target="_blank"&gt;Visit Example&lt;/a&gt;</code></pre>
+
+    <h2>5. Forms and Input Elements</h2>
+    <p>Forms allow user input through various input fields:</p>
+    <pre><code>&lt;form&gt;
+    &lt;label for="name"&gt;Name:&lt;/label&gt;
+    &lt;input type="text" id="name" name="name"&gt;
+    &lt;input type="submit" value="Submit"&gt;
+&lt;/form&gt;
+    </code></pre>
+
+    <h2>6. Semantic HTML</h2>
+    <p>Semantic elements help in defining the meaning of web content, improving accessibility and SEO.</p>
+    <ul>
+        <li><code>&lt;header&gt;</code></li>
+        <li><code>&lt;footer&gt;</code></li>
+        <li><code>&lt;article&gt;</code></li>
+        <li><code>&lt;section&gt;</code></li>
+    </ul>
+
+    <h2>7. Multimedia Elements</h2>
+    <p>HTML supports embedding multimedia:</p>
+    <ul>
+        <li>Audio: <code>&lt;audio&gt;</code></li>
+        <li>Video: <code>&lt;video&gt;</code></li>
+        <li>Embedding a webpage: <code>&lt;iframe&gt;</code></li>
+    </ul>
+
+    <h2>8. CSS in HTML</h2>
+    <p>CSS (Cascading Style Sheets) is used to style HTML documents. Examples:</p>
+    <pre><code>&lt;style&gt;
+    body { background-color: lightgray; font-family: Arial, sans-serif; }
+    h1 { color: darkblue; }
+&lt;/style&gt;
+    </code></pre>
+
+    <h2>9. JavaScript in HTML</h2>
+    <p>JavaScript is used for interactivity in web pages. Examples:</p>
+    <pre><code>&lt;script&gt;
+    function greet() {
+        alert("Welcome to my website!");
+    }
+&lt;/script&gt;
+&lt;button onclick="greet()"&gt;Greet&lt;/button&gt;
+    </code></pre>
+
+    <p>Understanding these fundamental concepts will help you build well-structured and interactive web pages using HTML, CSS, and JavaScript.</p>
+</body>
+</html>

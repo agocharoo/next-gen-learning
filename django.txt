@@ -1,0 +1,33 @@
+python3 --version
+python3 -m venv venv
+source venv/bin/activate
+pip install django
+django-admin startproject mysite .
+python3 manage.py runserver  
+(why python3?, if we use python then it will think it’s python 2, if you have python 2 installed)
+Python3 manage.py startapp food
+
+# In view.py file
+from django.http import HttpResponse
+
+def index(request):
+	return HttpResponse(’Hello World’)
+
+#Function in view.py is called as view in django
+
+#Create url.py file in food app
+#In url.py we need to import views
+from . import views
+from dajngo.urls import path
+urlpatterns = [
+	path('', views.index, name ='index')
+]
+
+#Now we need to link the urls of food app to main app
+from django.urls import  include
+urlpatterns = [
+    path('admin/', admin.site.urls),
+    path('food/', include('food.urls')),
+]
+
+

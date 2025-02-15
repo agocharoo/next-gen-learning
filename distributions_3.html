@@ -1,0 +1,1456 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Comprehensive Statistics Distributions Cheat Sheet</title>
+  <!-- Include Plotly -->
+  <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+  <!-- Include MathJax for LaTeX equations -->
+  <script>
+    window.MathJax = {
+      tex: { inlineMath: [['\\(', '\\)']] },
+      svg: { fontCache: 'global' }
+    };
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 20px; }
+    .distribution { border: 1px solid #ccc; padding: 15px; margin-bottom: 30px; }
+    .param { margin: 5px 0; }
+    h2 { color: #333; border-bottom: 2px solid #ccc; padding-bottom: 5px; }
+    h3 { color: #555; }
+    .section { margin-bottom: 50px; }
+    .note { font-style: italic; color: #666; }
+  </style>
+</head>
+<body>
+  <h1>Comprehensive Statistics Distributions Cheat Sheet</h1>
+  <p>This page contains interactive plots, formulas, common application areas, and example case studies for a large set of distributions. Adjust the parameters to see changes in the plots and computed statistics.</p>
+
+  <!-- ========================================================== -->
+  <!-- 1. Discrete Distributions (Count Data) -->
+  <!-- ========================================================== -->
+  <div class="section" id="section-discrete">
+    <h2>1. Discrete Distributions (Count Data)</h2>
+    
+    <!-- Bernoulli Distribution -->
+    <div class="distribution" id="dist-bernoulli">
+      <h3>Bernoulli Distribution</h3>
+      <p><strong>PMF:</strong> \( f(x) = p^x (1-p)^{1-x}, \quad x \in \{0,1\} \)</p>
+      <div class="param">
+        <label for="bernoulli-p">p:</label>
+        <input type="range" id="bernoulli-p" min="0.01" max="0.99" step="0.01" value="0.5" oninput="updateBernoulli()">
+        <span id="bernoulli-p-val">0.5</span>
+      </div>
+      <div id="plot-bernoulli" style="width: 600px; height: 400px;"></div>
+      <p><strong>Mean:</strong> <span id="bernoulli-mean"></span>, <strong>Std Dev:</strong> <span id="bernoulli-std"></span></p>
+      <p><strong>Common Areas:</strong> Binary outcomes (e.g. coin tosses, yes/no decisions).</p>
+      <p><strong>Example Case Study:</strong> In a clinical trial, each patient’s response (success/failure) to a treatment is modeled as a Bernoulli trial.</p>
+    </div>
+
+    <!-- Binomial Distribution -->
+    <div class="distribution" id="dist-binomial">
+      <h3>Binomial Distribution</h3>
+      <p><strong>PMF:</strong> \( f(x) = \binom{n}{x} p^x (1-p)^{n-x}, \quad x=0,\dots,n \)</p>
+      <div class="param">
+        <label for="binomial-n">n:</label>
+        <input type="number" id="binomial-n" min="1" max="30" value="10" oninput="updateBinomial()">
+        <span id="binomial-n-val">10</span>
+      </div>
+      <div class="param">
+        <label for="binomial-p">p:</label>
+        <input type="range" id="binomial-p" min="0.01" max="0.99" step="0.01" value="0.5" oninput="updateBinomial()">
+        <span id="binomial-p-val">0.5</span>
+      </div>
+      <div id="plot-binomial" style="width: 600px; height: 400px;"></div>
+      <p><strong>Mean:</strong> <span id="binomial-mean"></span>, <strong>Std Dev:</strong> <span id="binomial-std"></span></p>
+      <p><strong>Common Areas:</strong> Counting the number of successes in fixed independent trials.</p>
+      <p><strong>Example Case Study:</strong> A quality control inspector checking 10 items for defects uses a Binomial model to count the number of defective items.</p>
+    </div>
+
+    <!-- Geometric Distribution -->
+    <div class="distribution" id="dist-geometric">
+      <h3>Geometric Distribution</h3>
+      <p><strong>PMF:</strong> \( f(x) = p (1-p)^{x-1}, \quad x=1,2,\dots \)</p>
+      <div class="param">
+        <label for="geometric-p">p:</label>
+        <input type="range" id="geometric-p" min="0.01" max="0.99" step="0.01" value="0.3" oninput="updateGeometric()">
+        <span id="geometric-p-val">0.3</span>
+      </div>
+      <div id="plot-geometric" style="width: 600px; height: 400px;"></div>
+      <p><strong>Mean:</strong> <span id="geometric-mean"></span>, <strong>Std Dev:</strong> <span id="geometric-std"></span></p>
+      <p><strong>Common Areas:</strong> Modeling the number of trials until the first success.</p>
+      <p><strong>Example Case Study:</strong> A salesperson making calls until the first sale follows a Geometric distribution.</p>
+    </div>
+
+    <!-- Negative Binomial Distribution -->
+    <div class="distribution" id="dist-negbinomial">
+      <h3>Negative Binomial Distribution</h3>
+      <p><strong>PMF:</strong> \( f(x) = \binom{x+r-1}{x} p^r (1-p)^x, \quad x=0,1,2,\dots \)</p>
+      <div class="param">
+        <label for="negbinomial-r">r (successes):</label>
+        <input type="number" id="negbinomial-r" min="1" max="10" value="3" oninput="updateNegBinomial()">
+        <span id="negbinomial-r-val">3</span>
+      </div>
+      <div class="param">
+        <label for="negbinomial-p">p:</label>
+        <input type="range" id="negbinomial-p" min="0.01" max="0.99" step="0.01" value="0.4" oninput="updateNegBinomial()">
+        <span id="negbinomial-p-val">0.4</span>
+      </div>
+      <div id="plot-negbinomial" style="width: 600px; height: 400px;"></div>
+      <p><strong>Mean:</strong> <span id="negbinomial-mean"></span>, <strong>Std Dev:</strong> <span id="negbinomial-std"></span></p>
+      <p><strong>Common Areas:</strong> Counting the number of failures before a set number of successes.</p>
+      <p><strong>Example Case Study:</strong> In a drug trial, counting the number of patients with side effects before a fixed number of positive responses.</p>
+    </div>
+
+    <!-- Poisson Distribution -->
+    <div class="distribution" id="dist-poisson">
+      <h3>Poisson Distribution</h3>
+      <p><strong>PMF:</strong> \( f(x) = \frac{\lambda^x e^{-\lambda}}{x!}, \quad x=0,1,2,\dots \)</p>
+      <div class="param">
+        <label for="poisson-lambda">\( \lambda \):</label>
+        <input type="range" id="poisson-lambda" min="0.5" max="10" step="0.1" value="3" oninput="updatePoisson()">
+        <span id="poisson-lambda-val">3</span>
+      </div>
+      <div id="plot-poisson" style="width: 600px; height: 400px;"></div>
+      <p><strong>Mean:</strong> <span id="poisson-mean"></span>, <strong>Std Dev:</strong> <span id="poisson-std"></span></p>
+      <p><strong>Common Areas:</strong> Counting events in a fixed time/area (e.g. call arrivals).</p>
+      <p><strong>Example Case Study:</strong> Modeling the number of emails received by a help desk per hour.</p>
+    </div>
+
+    <!-- Hypergeometric Distribution -->
+    <div class="distribution" id="dist-hypergeometric">
+      <h3>Hypergeometric Distribution</h3>
+      <p><strong>PMF:</strong> \( f(k) = \frac{\binom{K}{k} \binom{N-K}{n-k}}{\binom{N}{n}}, \quad \max(0, n-(N-K))\le k\le\min(n,K) \)</p>
+      <div class="param">
+        <label for="hyper-N">N (population):</label>
+        <input type="number" id="hyper-N" min="10" max="100" value="50" oninput="updateHypergeometric()">
+        <span id="hyper-N-val">50</span>
+      </div>
+      <div class="param">
+        <label for="hyper-K">K (successes in pop):</label>
+        <input type="number" id="hyper-K" min="1" max="50" value="20" oninput="updateHypergeometric()">
+        <span id="hyper-K-val">20</span>
+      </div>
+      <div class="param">
+        <label for="hyper-n">n (sample size):</label>
+        <input type="number" id="hyper-n" min="1" max="20" value="10" oninput="updateHypergeometric()">
+        <span id="hyper-n-val">10</span>
+      </div>
+      <div id="plot-hyper" style="width: 600px; height: 400px;"></div>
+      <p><strong>Mean:</strong> <span id="hyper-mean"></span>, <strong>Std Dev:</strong> <span id="hyper-std"></span></p>
+      <p><strong>Common Areas:</strong> Sampling without replacement (e.g. quality inspection from a batch).</p>
+      <p><strong>Example Case Study:</strong> Determining the probability of drawing a certain number of defective items from a production lot.</p>
+    </div>
+
+    <!-- Multinomial Distribution (Marginal view) -->
+    <div class="distribution" id="dist-multinomial">
+      <h3>Multinomial Distribution <span class="note">(Marginal view for one category)</span></h3>
+      <p><strong>PMF:</strong> \( f(x_1,x_2,x_3) = \frac{n!}{x_1!x_2!x_3!} p_1^{x_1}p_2^{x_2}p_3^{x_3}, \quad x_1+x_2+x_3=n \)</p>
+      <div class="param">
+        <label for="multi-n">n:</label>
+        <input type="number" id="multi-n" min="1" max="50" value="20" oninput="updateMultinomial()">
+        <span id="multi-n-val">20</span>
+      </div>
+      <div class="param">
+        <label for="multi-p1">\( p_1 \):</label>
+        <input type="range" id="multi-p1" min="0.01" max="0.98" step="0.01" value="0.3" oninput="updateMultinomial()">
+        <span id="multi-p1-val">0.3</span>
+      </div>
+      <div class="param">
+        <label for="multi-p2">\( p_2 \):</label>
+        <input type="range" id="multi-p2" min="0.01" max="0.98" step="0.01" value="0.5" oninput="updateMultinomial()">
+        <span id="multi-p2-val">0.5</span>
+      </div>
+      <p class="note">\( p_3 \) is automatically set to \( 1-p_1-p_2 \).</p>
+      <div id="plot-multinomial" style="width: 600px; height: 400px;"></div>
+      <p><strong>Marginal (Category 1) Mean:</strong> <span id="multi-mean"></span>, <strong>Std Dev:</strong> <span id="multi-std"></span></p>
+      <p><strong>Common Areas:</strong> Multiclass outcomes (e.g. survey responses).</p>
+      <p><strong>Example Case Study:</strong> In a market survey with three product choices, the number of selections for product 1 can be modeled marginally as Binomial(n, p₁).</p>
+    </div>
+  </div>
+
+  <!-- ========================================================== -->
+  <!-- 2. Continuous Distributions (Real-Valued Data) -->
+  <!-- ========================================================== -->
+  <div class="section" id="section-continuous">
+    <h2>2. Continuous Distributions (Real-Valued Data)</h2>
+
+    <!-- Normal Distribution -->
+    <div class="distribution" id="dist-normal">
+      <h3>Normal (Gaussian) Distribution</h3>
+      <p><strong>PDF:</strong> \( f(x) = \frac{1}{\sigma\sqrt{2\pi}} \exp\Bigl(-\frac{(x-\mu)^2}{2\sigma^2}\Bigr) \)</p>
+      <div class="param">
+        <label for="normal-mu">\( \mu \):</label>
+        <input type="number" id="normal-mu" value="0" step="0.1" oninput="updateNormal()">
+        <span id="normal-mu-val">0</span>
+      </div>
+      <div class="param">
+        <label for="normal-sigma">\( \sigma \):</label>
+        <input type="range" id="normal-sigma" min="0.1" max="10" step="0.1" value="1" oninput="updateNormal()">
+        <span id="normal-sigma-val">1</span>
+      </div>
+      <div id="plot-normal" style="width: 600px; height: 400px;"></div>
+      <p><strong>Mean:</strong> <span id="normal-mean"></span>, <strong>Std Dev:</strong> <span id="normal-std"></span></p>
+      <p><strong>Common Areas:</strong> Natural phenomena and measurement errors.</p>
+      <p><strong>Example Case Study:</strong> Human heights in a large population are typically modeled by a Normal distribution.</p>
+    </div>
+
+    <!-- Exponential Distribution -->
+    <div class="distribution" id="dist-exponential">
+      <h3>Exponential Distribution</h3>
+      <p><strong>PDF:</strong> \( f(x) = \lambda \exp(-\lambda x), \quad x\ge0 \)</p>
+      <div class="param">
+        <label for="exponential-lambda">\( \lambda \):</label>
+        <input type="range" id="exponential-lambda" min="0.1" max="5" step="0.1" value="1" oninput="updateExponential()">
+        <span id="exponential-lambda-val">1</span>
+      </div>
+      <div id="plot-exponential" style="width: 600px; height: 400px;"></div>
+      <p><strong>Mean:</strong> <span id="exponential-mean"></span>, <strong>Std Dev:</strong> <span id="exponential-std"></span></p>
+      <p><strong>Common Areas:</strong> Time until an event occurs (e.g. inter-arrival times).</p>
+      <p><strong>Example Case Study:</strong> The waiting time between customer arrivals at a bank is often modeled as Exponential.</p>
+    </div>
+
+    <!-- Uniform Distribution -->
+    <div class="distribution" id="dist-uniform">
+      <h3>Uniform Distribution</h3>
+      <p><strong>PDF:</strong> \( f(x) = \frac{1}{b-a}, \quad a\le x\le b \)</p>
+      <div class="param">
+        <label for="uniform-a">a:</label>
+        <input type="number" id="uniform-a" value="0" step="0.1" oninput="updateUniform()">
+        <span id="uniform-a-val">0</span>
+      </div>
+      <div class="param">
+        <label for="uniform-b">b:</label>
+        <input type="number" id="uniform-b" value="1" step="0.1" oninput="updateUniform()">
+        <span id="uniform-b-val">1</span>
+      </div>
+      <div id="plot-uniform" style="width: 600px; height: 400px;"></div>
+      <p><strong>Mean:</strong> <span id="uniform-mean"></span>, <strong>Std Dev:</strong> <span id="uniform-std"></span></p>
+      <p><strong>Common Areas:</strong> Modeling scenarios with equally likely outcomes.</p>
+      <p><strong>Example Case Study:</strong> Generating random numbers between 0 and 1 is modeled by a Uniform distribution.</p>
+    </div>
+
+    <!-- Gamma Distribution -->
+    <div class="distribution" id="dist-gamma">
+      <h3>Gamma Distribution</h3>
+      <p><strong>PDF:</strong> \( f(x) = \frac{x^{k-1} e^{-x/\theta}}{\theta^k \Gamma(k)}, \quad x\ge0 \)</p>
+      <div class="param">
+        <label for="gamma-k">k (shape):</label>
+        <input type="number" id="gamma-k" value="2" step="0.1" oninput="updateGamma()">
+        <span id="gamma-k-val">2</span>
+      </div>
+      <div class="param">
+        <label for="gamma-theta">\( \theta \) (scale):</label>
+        <input type="number" id="gamma-theta" value="2" step="0.1" oninput="updateGamma()">
+        <span id="gamma-theta-val">2</span>
+      </div>
+      <div id="plot-gamma" style="width: 600px; height: 400px;"></div>
+      <p><strong>Mean:</strong> <span id="gamma-mean"></span>, <strong>Std Dev:</strong> <span id="gamma-std"></span></p>
+      <p><strong>Common Areas:</strong> Modeling waiting times and rainfall amounts.</p>
+      <p><strong>Example Case Study:</strong> Monthly rainfall amounts, which are skewed, can be modeled using a Gamma distribution.</p>
+    </div>
+
+    <!-- Beta Distribution -->
+    <div class="distribution" id="dist-beta">
+      <h3>Beta Distribution</h3>
+      <p><strong>PDF:</strong> \( f(x) = \frac{x^{\alpha-1}(1-x)^{\beta-1}}{B(\alpha,\beta)}, \quad 0<x<1 \)</p>
+      <div class="param">
+        <label for="beta-alpha">\( \alpha \):</label>
+        <input type="number" id="beta-alpha" value="2" step="0.1" oninput="updateBeta()">
+        <span id="beta-alpha-val">2</span>
+      </div>
+      <div class="param">
+        <label for="beta-beta">\( \beta \):</label>
+        <input type="number" id="beta-beta" value="5" step="0.1" oninput="updateBeta()">
+        <span id="beta-beta-val">5</span>
+      </div>
+      <div id="plot-beta" style="width: 600px; height: 400px;"></div>
+      <p><strong>Mean:</strong> <span id="beta-mean"></span>, <strong>Std Dev:</strong> <span id="beta-std"></span></p>
+      <p><strong>Common Areas:</strong> Modeling probabilities and proportions.</p>
+      <p><strong>Example Case Study:</strong> Website conversion rates in A/B testing are modeled using a Beta distribution.</p>
+    </div>
+
+    <!-- Log-Normal Distribution -->
+    <div class="distribution" id="dist-lognormal">
+      <h3>Log-Normal Distribution</h3>
+      <p><strong>PDF:</strong> \( f(x) = \frac{1}{x\sigma\sqrt{2\pi}} \exp\Bigl(-\frac{(\ln x-\mu)^2}{2\sigma^2}\Bigr), \quad x>0 \)</p>
+      <div class="param">
+        <label for="lognormal-mu">\( \mu \):</label>
+        <input type="number" id="lognormal-mu" value="0" step="0.1" oninput="updateLogNormal()">
+        <span id="lognormal-mu-val">0</span>
+      </div>
+      <div class="param">
+        <label for="lognormal-sigma">\( \sigma \):</label>
+        <input type="range" id="lognormal-sigma" min="0.1" max="2" step="0.1" value="0.5" oninput="updateLogNormal()">
+        <span id="lognormal-sigma-val">0.5</span>
+      </div>
+      <div id="plot-lognormal" style="width: 600px; height: 400px;"></div>
+      <p><strong>Mean:</strong> <span id="lognormal-mean"></span>, <strong>Std Dev:</strong> <span id="lognormal-std"></span></p>
+      <p><strong>Common Areas:</strong> Modeling incomes and other positively skewed data.</p>
+      <p><strong>Example Case Study:</strong> Household incomes, which are right-skewed, are often modeled by a Log-Normal distribution.</p>
+    </div>
+
+    <!-- Chi-Square Distribution -->
+    <div class="distribution" id="dist-chisq">
+      <h3>Chi-Square Distribution</h3>
+      <p><strong>PDF:</strong> \( f(x) = \frac{1}{2^{k/2}\Gamma(k/2)} x^{k/2-1} e^{-x/2}, \quad x\ge0 \)</p>
+      <div class="param">
+        <label for="chisq-k">Degrees of freedom k:</label>
+        <input type="number" id="chisq-k" value="4" step="1" min="1" oninput="updateChiSquare()">
+        <span id="chisq-k-val">4</span>
+      </div>
+      <div id="plot-chisq" style="width: 600px; height: 400px;"></div>
+      <p><strong>Mean:</strong> <span id="chisq-mean"></span>, <strong>Std Dev:</strong> <span id="chisq-std"></span></p>
+      <p><strong>Common Areas:</strong> Test statistics in hypothesis testing.</p>
+      <p><strong>Example Case Study:</strong> Chi-square tests in genetics assess association between traits.</p>
+    </div>
+
+    <!-- Weibull Distribution -->
+    <div class="distribution" id="dist-weibull">
+      <h3>Weibull Distribution</h3>
+      <p><strong>PDF:</strong> \( f(x) = \frac{k}{\lambda} \Bigl(\frac{x}{\lambda}\Bigr)^{k-1} \exp\Bigl[-\Bigl(\frac{x}{\lambda}\Bigr)^k\Bigr], \quad x\ge0 \)</p>
+      <div class="param">
+        <label for="weibull-k">k (shape):</label>
+        <input type="number" id="weibull-k" value="1.5" step="0.1" oninput="updateWeibull()">
+        <span id="weibull-k-val">1.5</span>
+      </div>
+      <div class="param">
+        <label for="weibull-lambda">\( \lambda \) (scale):</label>
+        <input type="number" id="weibull-lambda" value="1" step="0.1" oninput="updateWeibull()">
+        <span id="weibull-lambda-val">1</span>
+      </div>
+      <div id="plot-weibull" style="width: 600px; height: 400px;"></div>
+      <p><strong>Mean:</strong> <span id="weibull-mean"></span>, <strong>Std Dev:</strong> <span id="weibull-std"></span></p>
+      <p><strong>Common Areas:</strong> Reliability and life data analysis.</p>
+      <p><strong>Example Case Study:</strong> Lifespans of mechanical parts are often modeled with a Weibull distribution.</p>
+    </div>
+
+    <!-- Student's t-Distribution -->
+    <div class="distribution" id="dist-t">
+      <h3>Student's t-Distribution</h3>
+      <p><strong>PDF:</strong> \( f(x) = \frac{\Gamma\Bigl(\frac{\nu+1}{2}\Bigr)}{\sqrt{\nu\pi}\,\Gamma\Bigl(\frac{\nu}{2}\Bigr)} \Bigl(1+\frac{x^2}{\nu}\Bigr)^{-\frac{\nu+1}{2}}, \quad x\in\mathbb{R} \)</p>
+      <div class="param">
+        <label for="t-nu">Degrees of Freedom \( \nu \):</label>
+        <input type="number" id="t-nu" min="1" max="30" value="5" oninput="updateTStudent()">
+        <span id="t-nu-val">5</span>
+      </div>
+      <div id="plot-t" style="width: 600px; height: 400px;"></div>
+      <p><strong>Mean:</strong> <span id="t-mean"></span>, <strong>Std Dev:</strong> <span id="t-std"></span></p>
+      <p><strong>Common Areas:</strong> Used in small-sample inference when variance is unknown.</p>
+      <p><strong>Example Case Study:</strong> Test scores standardized with unknown variance can be modeled by a Student's t-distribution.</p>
+    </div>
+
+    <!-- F-Distribution -->
+    <div class="distribution" id="dist-f">
+      <h3>F-Distribution</h3>
+      <p><strong>PDF:</strong> \( f(x;d_1,d_2)=\frac{\sqrt{\frac{(d_1 x)^{d_1} d_2^{d_2}}{(d_1 x+d_2)^{d_1+d_2}}}}{x\,B\Bigl(\frac{d_1}{2},\frac{d_2}{2}\Bigr)}, \quad x>0 \)</p>
+      <div class="param">
+        <label for="f-d1">\( d_1 \):</label>
+        <input type="number" id="f-d1" min="1" max="20" value="5" oninput="updateFDistribution()">
+        <span id="f-d1-val">5</span>
+      </div>
+      <div class="param">
+        <label for="f-d2">\( d_2 \):</label>
+        <input type="number" id="f-d2" min="1" max="50" value="10" oninput="updateFDistribution()">
+        <span id="f-d2-val">10</span>
+      </div>
+      <div id="plot-f" style="width: 600px; height: 400px;"></div>
+      <p><strong>Mean:</strong> <span id="f-mean"></span>, <strong>Std Dev:</strong> <span id="f-std"></span></p>
+      <p><strong>Common Areas:</strong> Variance analysis and ANOVA testing.</p>
+      <p><strong>Example Case Study:</strong> Comparing group variances in experimental studies often involves the F-distribution.</p>
+    </div>
+  </div>
+
+  <!-- ========================================================== -->
+  <!-- 3. Mixed (Hybrid) Distributions (Discrete + Continuous) -->
+  <!-- ========================================================== -->
+  <div class="section" id="section-mixed">
+    <h2>3. Mixed (Hybrid) Distributions (Discrete + Continuous)</h2>
+
+    <!-- Zero-Inflated Poisson Distribution -->
+    <div class="distribution" id="dist-zip">
+      <h3>Zero-Inflated Poisson (ZIP) Distribution</h3>
+      <p><strong>PMF:</strong> 
+      \[
+      P(X=0)=\pi+(1-\pi)e^{-\lambda},\quad P(X=k)= (1-\pi)\frac{\lambda^k e^{-\lambda}}{k!},\; k\ge1
+      \]
+      </p>
+      <div class="param">
+        <label for="zip-pi">\( \pi \):</label>
+        <input type="range" id="zip-pi" min="0" max="0.9" step="0.01" value="0.2" oninput="updateZIP()">
+        <span id="zip-pi-val">0.2</span>
+      </div>
+      <div class="param">
+        <label for="zip-lambda">\( \lambda \):</label>
+        <input type="range" id="zip-lambda" min="0.5" max="10" step="0.1" value="3" oninput="updateZIP()">
+        <span id="zip-lambda-val">3</span>
+      </div>
+      <div id="plot-zip" style="width: 600px; height: 400px;"></div>
+      <p><strong>Mean:</strong> <span id="zip-mean"></span>, <strong>Std Dev:</strong> <span id="zip-std"></span></p>
+      <p><strong>Common Areas:</strong> Count data with excess zeros (e.g. insurance claims).</p>
+      <p><strong>Example Case Study:</strong> Modeling the number of defects in manufactured items where many items have zero defects.</p>
+    </div>
+
+    <!-- Zero-Inflated Negative Binomial Distribution -->
+    <div class="distribution" id="dist-zinb">
+      <h3>Zero-Inflated Negative Binomial Distribution</h3>
+      <p><strong>PMF:</strong> 
+      \[
+      P(X=0)=\pi+(1-\pi)\binom{r-1}{0}p^r,\quad P(X=k)= (1-\pi)\binom{k+r-1}{k} p^r (1-p)^k,\; k\ge1
+      \]
+      </p>
+      <div class="param">
+        <label for="zinb-pi">\( \pi \):</label>
+        <input type="range" id="zinb-pi" min="0" max="0.9" step="0.01" value="0.2" oninput="updateZINB()">
+        <span id="zinb-pi-val">0.2</span>
+      </div>
+      <div class="param">
+        <label for="zinb-r">r:</label>
+        <input type="number" id="zinb-r" min="1" max="10" value="3" oninput="updateZINB()">
+        <span id="zinb-r-val">3</span>
+      </div>
+      <div class="param">
+        <label for="zinb-p">p:</label>
+        <input type="range" id="zinb-p" min="0.01" max="0.99" step="0.01" value="0.4" oninput="updateZINB()">
+        <span id="zinb-p-val">0.4</span>
+      </div>
+      <div id="plot-zinb" style="width: 600px; height: 400px;"></div>
+      <p><strong>Mean:</strong> <span id="zinb-mean"></span>, <strong>Std Dev:</strong> <span id="zinb-std"></span></p>
+      <p><strong>Common Areas:</strong> Overdispersed count data with many zeros.</p>
+      <p><strong>Example Case Study:</strong> Modeling hospital visits where many people have zero visits.</p>
+    </div>
+
+    <!-- Spiked Normal Distribution -->
+    <div class="distribution" id="dist-spikednormal">
+      <h3>Spiked Normal Distribution</h3>
+      <p><strong>Definition:</strong> A mixture: \(P(X=0)=\pi\) and for \(x\neq0\), density \(=(1-\pi)\,\phi(x;\mu,\sigma)\).</p>
+      <div class="param">
+        <label for="spike-pi">\( \pi \):</label>
+        <input type="range" id="spike-pi" min="0" max="0.9" step="0.01" value="0.3" oninput="updateSpikedNormal()">
+        <span id="spike-pi-val">0.3</span>
+      </div>
+      <div class="param">
+        <label for="spike-mu">\( \mu \):</label>
+        <input type="number" id="spike-mu" value="2" step="0.1" oninput="updateSpikedNormal()">
+        <span id="spike-mu-val">2</span>
+      </div>
+      <div class="param">
+        <label for="spike-sigma">\( \sigma \):</label>
+        <input type="range" id="spike-sigma" min="0.1" max="5" step="0.1" value="1" oninput="updateSpikedNormal()">
+        <span id="spike-sigma-val">1</span>
+      </div>
+      <div id="plot-spikednormal" style="width: 600px; height: 400px;"></div>
+      <p><strong>Mean:</strong> <span id="spikednormal-mean"></span>, <strong>Std Dev:</strong> <span id="spikednormal-std"></span></p>
+      <p><strong>Common Areas:</strong> Data with a point mass at zero and continuous positive values.</p>
+      <p><strong>Example Case Study:</strong> Modeling household expenditures where many households spend zero on a specific category and others follow a normal tail.</p>
+    </div>
+
+    <!-- Tweedie Distribution -->
+    <div class="distribution" id="dist-tweedie">
+      <h3>Tweedie Distribution</h3>
+      <p class="note">For \(1<p<2\), this models compound Poisson-Gamma data.</p>
+      <div class="param">
+        <label for="tweedie-mu">\( \mu \) (mean):</label>
+        <input type="number" id="tweedie-mu" value="5" step="0.1" oninput="updateTweedie()">
+        <span id="tweedie-mu-val">5</span>
+      </div>
+      <div class="param">
+        <label for="tweedie-phi">\( \phi \) (dispersion):</label>
+        <input type="number" id="tweedie-phi" value="1" step="0.1" oninput="updateTweedie()">
+        <span id="tweedie-phi-val">1</span>
+      </div>
+      <div class="param">
+        <label for="tweedie-p">p (power):</label>
+        <input type="range" id="tweedie-p" min="1.1" max="1.9" step="0.01" value="1.5" oninput="updateTweedie()">
+        <span id="tweedie-p-val">1.5</span>
+      </div>
+      <div id="plot-tweedie" style="width: 600px; height: 400px;"></div>
+      <p><strong>Mean:</strong> <span id="tweedie-mean"></span>, <strong>Std Dev:</strong> <span id="tweedie-std"></span></p>
+      <p><strong>Common Areas:</strong> Actuarial science and ecology for modeling claims or rainfall.</p>
+      <p><strong>Example Case Study:</strong> Insurance claim amounts with many zeros and a skewed positive tail can be modeled with a Tweedie distribution.</p>
+    </div>
+  </div>
+
+  <!-- ========================================================== -->
+  <!-- 4. Empirical & Non-Parametric Distributions -->
+  <!-- ========================================================== -->
+  <div class="section" id="section-empirical">
+    <h2>4. Empirical & Non-Parametric Distributions</h2>
+
+    <!-- Empirical Distribution -->
+    <div class="distribution" id="dist-empirical">
+      <h3>Empirical Distribution</h3>
+      <p>Enter a comma-separated list of numbers:</p>
+      <textarea id="empirical-data" rows="2" cols="50">1,2,2,3,4,5,5,5,6,7</textarea>
+      <br>
+      <button onclick="updateEmpirical()">Update Empirical Distribution</button>
+      <div id="plot-empirical" style="width: 600px; height: 400px;"></div>
+      <p><strong>Mean:</strong> <span id="empirical-mean"></span>, <strong>Std Dev:</strong> <span id="empirical-std"></span></p>
+      <p><strong>Common Areas:</strong> Directly observed data without assuming a parametric form.</p>
+      <p><strong>Example Case Study:</strong> Analyzing customer ratings from survey data without assuming any specific distribution.</p>
+    </div>
+
+    <!-- Kernel Density Estimation (KDE) -->
+    <div class="distribution" id="dist-kde">
+      <h3>Kernel Density Estimation (KDE)</h3>
+      <p>Using the same data as above, adjust the bandwidth:</p>
+      <div class="param">
+        <label for="kde-bandwidth">Bandwidth:</label>
+        <input type="range" id="kde-bandwidth" min="0.1" max="2" step="0.1" value="0.5" oninput="updateKDE()">
+        <span id="kde-bandwidth-val">0.5</span>
+      </div>
+      <div id="plot-kde" style="width: 600px; height: 400px;"></div>
+      <p><strong>Note:</strong> KDE provides a smooth estimate of the empirical density.</p>
+    </div>
+  </div>
+
+  <!-- ========================================================== -->
+  <!-- 5. Power Law & Heavy-Tailed Distributions -->
+  <!-- ========================================================== -->
+  <div class="section" id="section-heavy">
+    <h2>5. Power Law & Heavy-Tailed Distributions</h2>
+
+    <!-- Pareto Distribution -->
+    <div class="distribution" id="dist-pareto">
+      <h3>Pareto Distribution</h3>
+      <p><strong>PDF:</strong> \( f(x) = \frac{\alpha x_m^\alpha}{x^{\alpha+1}}, \quad x\ge x_m \)</p>
+      <div class="param">
+        <label for="pareto-xm">\( x_m \):</label>
+        <input type="number" id="pareto-xm" value="1" step="0.1" oninput="updatePareto()">
+        <span id="pareto-xm-val">1</span>
+      </div>
+      <div class="param">
+        <label for="pareto-alpha">\( \alpha \):</label>
+        <input type="range" id="pareto-alpha" min="1.1" max="5" step="0.1" value="2" oninput="updatePareto()">
+        <span id="pareto-alpha-val">2</span>
+      </div>
+      <div id="plot-pareto" style="width: 600px; height: 400px;"></div>
+      <p><strong>Mean:</strong> <span id="pareto-mean"></span>, <strong>Std Dev:</strong> <span id="pareto-std"></span></p>
+      <p><strong>Common Areas:</strong> Wealth distributions and city sizes.</p>
+      <p><strong>Example Case Study:</strong> The distribution of incomes in an economy often follows a Pareto (power law) distribution.</p>
+    </div>
+
+    <!-- Cauchy Distribution -->
+    <div class="distribution" id="dist-cauchy">
+      <h3>Cauchy Distribution</h3>
+      <p><strong>PDF:</strong> \( f(x) = \frac{1}{\pi\gamma\Bigl(1+\bigl(\frac{x-x_0}{\gamma}\bigr)^2\Bigr)} \)</p>
+      <div class="param">
+        <label for="cauchy-x0">\( x_0 \):</label>
+        <input type="number" id="cauchy-x0" value="0" step="0.1" oninput="updateCauchy()">
+        <span id="cauchy-x0-val">0</span>
+      </div>
+      <div class="param">
+        <label for="cauchy-gamma">\( \gamma \):</label>
+        <input type="range" id="cauchy-gamma" min="0.1" max="5" step="0.1" value="1" oninput="updateCauchy()">
+        <span id="cauchy-gamma-val">1</span>
+      </div>
+      <div id="plot-cauchy" style="width: 600px; height: 400px;"></div>
+      <p><strong>Mean:</strong> Undefined, <strong>Std Dev:</strong> Undefined</p>
+      <p><strong>Common Areas:</strong> Spectroscopy and resonance phenomena.</p>
+      <p><strong>Example Case Study:</strong> The distribution of measurement errors in certain physical experiments can follow a Cauchy law.</p>
+    </div>
+
+    <!-- Lévy Distribution -->
+    <div class="distribution" id="dist-levy">
+      <h3>Lévy Distribution</h3>
+      <p><strong>PDF:</strong> \( f(x) = \sqrt{\frac{c}{2\pi}} \frac{\exp\Bigl(-\frac{c}{2(x-\mu)}\Bigr)}{(x-\mu)^{3/2}}, \quad x>\mu \)</p>
+      <div class="param">
+        <label for="levy-mu">\( \mu \):</label>
+        <input type="number" id="levy-mu" value="0" step="0.1" oninput="updateLevy()">
+        <span id="levy-mu-val">0</span>
+      </div>
+      <div class="param">
+        <label for="levy-c">c:</label>
+        <input type="number" id="levy-c" value="1" step="0.1" oninput="updateLevy()">
+        <span id="levy-c-val">1</span>
+      </div>
+      <div id="plot-levy" style="width: 600px; height: 400px;"></div>
+      <p><strong>Mean:</strong> Infinite</p>
+      <p><strong>Common Areas:</strong> Stock market returns and diffusion processes.</p>
+      <p><strong>Example Case Study:</strong> Modeling extreme movements in financial asset returns can involve a Lévy distribution.</p>
+    </div>
+
+    <!-- Stable Distribution -->
+    <div class="distribution" id="dist-stable">
+      <h3>Stable Distribution</h3>
+      <p><strong>Note:</strong> Closed-form PDF generally unavailable. Interactive plot not implemented.</p>
+      <p><strong>Common Areas:</strong> Finance and signal processing.</p>
+      <p><strong>Example Case Study:</strong> Heavy-tailed asset returns are often modeled using Stable distributions.</p>
+    </div>
+
+    <!-- Zipf’s Law Distribution -->
+    <div class="distribution" id="dist-zipf">
+      <h3>Zipf’s Law Distribution</h3>
+      <p><strong>PMF:</strong> \( f(k) = \frac{1/k^s}{\sum_{j=1}^N 1/j^s}, \quad k=1,\dots,N \)</p>
+      <div class="param">
+        <label for="zipf-N">N (max rank):</label>
+        <input type="number" id="zipf-N" min="10" max="100" value="50" oninput="updateZipf()">
+        <span id="zipf-N-val">50</span>
+      </div>
+      <div class="param">
+        <label for="zipf-s">s:</label>
+        <input type="range" id="zipf-s" min="1.01" max="3" step="0.01" value="1.5" oninput="updateZipf()">
+        <span id="zipf-s-val">1.5</span>
+      </div>
+      <div id="plot-zipf" style="width: 600px; height: 400px;"></div>
+      <p><strong>Common Areas:</strong> Word frequencies in languages, city sizes.</p>
+      <p><strong>Example Case Study:</strong> The frequency of words in a book typically follows Zipf’s law.</p>
+    </div>
+  </div>
+
+  <!-- ========================================================== -->
+  <!-- 6. Special & Derived Distributions -->
+  <!-- ========================================================== -->
+  <div class="section" id="section-special">
+    <h2>6. Special & Derived Distributions</h2>
+
+    <!-- Gumbel Distribution -->
+    <div class="distribution" id="dist-gumbel">
+      <h3>Gumbel Distribution</h3>
+      <p><strong>PDF:</strong> \( f(x) = \frac{1}{\beta}\exp\Bigl(-\frac{x-\mu}{\beta}-\exp\Bigl(-\frac{x-\mu}{\beta}\Bigr)\Bigr) \)</p>
+      <div class="param">
+        <label for="gumbel-mu">\( \mu \):</label>
+        <input type="number" id="gumbel-mu" value="0" step="0.1" oninput="updateGumbel()">
+        <span id="gumbel-mu-val">0</span>
+      </div>
+      <div class="param">
+        <label for="gumbel-beta">\( \beta \):</label>
+        <input type="range" id="gumbel-beta" min="0.1" max="5" step="0.1" value="1" oninput="updateGumbel()">
+        <span id="gumbel-beta-val">1</span>
+      </div>
+      <div id="plot-gumbel" style="width: 600px; height: 400px;"></div>
+      <p><strong>Mean:</strong> \( \mu+ \beta \gamma \) (with \( \gamma\approx0.57722 \))</p>
+      <p><strong>Common Areas:</strong> Extreme value analysis (e.g. annual maximum rainfall).</p>
+      <p><strong>Example Case Study:</strong> Modeling the maximum daily river flow in a year uses the Gumbel distribution.</p>
+    </div>
+
+    <!-- Laplace Distribution -->
+    <div class="distribution" id="dist-laplace">
+      <h3>Laplace Distribution</h3>
+      <p><strong>PDF:</strong> \( f(x) = \frac{1}{2b}\exp\Bigl(-\frac{|x-\mu|}{b}\Bigr) \)</p>
+      <div class="param">
+        <label for="laplace-mu">\( \mu \):</label>
+        <input type="number" id="laplace-mu" value="0" step="0.1" oninput="updateLaplace()">
+        <span id="laplace-mu-val">0</span>
+      </div>
+      <div class="param">
+        <label for="laplace-b">b:</label>
+        <input type="range" id="laplace-b" min="0.1" max="5" step="0.1" value="1" oninput="updateLaplace()">
+        <span id="laplace-b-val">1</span>
+      </div>
+      <div id="plot-laplace" style="width: 600px; height: 400px;"></div>
+      <p><strong>Mean:</strong> \( \mu \), <strong>Variance:</strong> \( 2b^2 \)</p>
+      <p><strong>Common Areas:</strong> Signal processing and financial return modeling.</p>
+      <p><strong>Example Case Study:</strong> Price changes in certain markets may follow a Laplace distribution.</p>
+    </div>
+
+    <!-- Rayleigh Distribution -->
+    <div class="distribution" id="dist-rayleigh">
+      <h3>Rayleigh Distribution</h3>
+      <p><strong>PDF:</strong> \( f(x) = \frac{x}{\sigma^2}\exp\Bigl(-\frac{x^2}{2\sigma^2}\Bigr), \quad x\ge0 \)</p>
+      <div class="param">
+        <label for="rayleigh-sigma">\( \sigma \):</label>
+        <input type="range" id="rayleigh-sigma" min="0.1" max="5" step="0.1" value="1" oninput="updateRayleigh()">
+        <span id="rayleigh-sigma-val">1</span>
+      </div>
+      <div id="plot-rayleigh" style="width: 600px; height: 400px;"></div>
+      <p><strong>Mean:</strong> \( \sigma\sqrt{\pi/2} \), <strong>Variance:</strong> \( \frac{(4-\pi)}{2}\sigma^2 \)</p>
+      <p><strong>Common Areas:</strong> Modeling wind speeds and signal fading.</p>
+      <p><strong>Example Case Study:</strong> The amplitude of scattered radar signals is often modeled by a Rayleigh distribution.</p>
+    </div>
+
+    <!-- Logistic Distribution -->
+    <div class="distribution" id="dist-logistic">
+      <h3>Logistic Distribution</h3>
+      <p><strong>PDF:</strong> \( f(x) = \frac{\exp\Bigl(-\frac{x-\mu}{s}\Bigr)}{s\Bigl(1+\exp\Bigl(-\frac{x-\mu}{s}\Bigr)\Bigr)^2} \)</p>
+      <div class="param">
+        <label for="logistic-mu">\( \mu \):</label>
+        <input type="number" id="logistic-mu" value="0" step="0.1" oninput="updateLogistic()">
+        <span id="logistic-mu-val">0</span>
+      </div>
+      <div class="param">
+        <label for="logistic-s">s:</label>
+        <input type="range" id="logistic-s" min="0.1" max="5" step="0.1" value="1" oninput="updateLogistic()">
+        <span id="logistic-s-val">1</span>
+      </div>
+      <div id="plot-logistic" style="width: 600px; height: 400px;"></div>
+      <p><strong>Mean:</strong> \( \mu \), <strong>Variance:</strong> \( \frac{\pi^2}{3}s^2 \)</p>
+      <p><strong>Common Areas:</strong> Logistic regression and population growth.</p>
+      <p><strong>Example Case Study:</strong> The spread of a contagious disease in a population may be modeled by a Logistic distribution.</p>
+    </div>
+
+    <!-- Dirichlet Distribution -->
+    <div class="distribution" id="dist-dirichlet">
+      <h3>Dirichlet Distribution</h3>
+      <p><strong>PDF:</strong> \( f(x_1,x_2,x_3)=\frac{1}{B(\boldsymbol\alpha)} x_1^{\alpha_1-1}x_2^{\alpha_2-1}x_3^{\alpha_3-1} \) on \( x_1+x_2+x_3=1 \)</p>
+      <div class="param">
+        <label for="dirichlet-a1">\( \alpha_1 \):</label>
+        <input type="number" id="dirichlet-a1" value="2" step="0.1" oninput="updateDirichlet()">
+        <span id="dirichlet-a1-val">2</span>
+      </div>
+      <div class="param">
+        <label for="dirichlet-a2">\( \alpha_2 \):</label>
+        <input type="number" id="dirichlet-a2" value="2" step="0.1" oninput="updateDirichlet()">
+        <span id="dirichlet-a2-val">2</span>
+      </div>
+      <div class="param">
+        <label for="dirichlet-a3">\( \alpha_3 \):</label>
+        <input type="number" id="dirichlet-a3" value="2" step="0.1" oninput="updateDirichlet()">
+        <span id="dirichlet-a3-val">2</span>
+      </div>
+      <div id="plot-dirichlet" style="width: 600px; height: 400px;"></div>
+      <p><strong>Common Areas:</strong> Modeling proportions in multivariate settings (e.g. topic distributions in text).</p>
+      <p><strong>Example Case Study:</strong> In document classification, the Dirichlet distribution is used to model the distribution over topics.</p>
+    </div>
+
+    <!-- Wishart Distribution -->
+    <div class="distribution" id="dist-wishart">
+      <h3>Wishart Distribution</h3>
+      <p><strong>Note:</strong> A distribution over positive-definite matrices. Interactive plot not implemented.</p>
+      <p><strong>Common Areas:</strong> Multivariate statistics and covariance estimation.</p>
+      <p><strong>Example Case Study:</strong> Bayesian estimation of covariance matrices in multivariate normal models uses the Wishart distribution.</p>
+    </div>
+  </div>
+
+  <!-- ========================================================== -->
+  <!-- Helper Functions & Initialization -->
+  <!-- ========================================================== -->
+  <script>
+    /* ---------- Basic Math Helpers ---------- */
+    function factorial(n) {
+      if(n === 0 || n === 1) return 1;
+      let prod = 1;
+      for(let i = 2; i <= n; i++) { prod *= i; }
+      return prod;
+    }
+    function combination(n, k) {
+      return factorial(n) / (factorial(k) * factorial(n-k));
+    }
+    function gamma(z) {
+      const p = [0.99999999999980993,
+                 676.5203681218851,
+                 -1259.1392167224028,
+                 771.32342877765313,
+                 -176.61502916214059,
+                 12.507343278686905,
+                 -0.13857109526572012,
+                 9.9843695780195716e-6,
+                 1.5056327351493116e-7];
+      if(z < 0.5) {
+        return Math.PI / (Math.sin(Math.PI*z) * gamma(1-z));
+      }
+      z -= 1;
+      let x = p[0];
+      for(let i = 1; i < p.length; i++){
+        x += p[i] / (z + i);
+      }
+      const t = z + p.length - 0.5;
+      return Math.sqrt(2*Math.PI) * Math.pow(t, z+0.5) * Math.exp(-t) * x;
+    }
+    function betaFunc(a, b) {
+      return gamma(a) * gamma(b) / gamma(a+b);
+    }
+
+    /* ---------- Random Number Generators ---------- */
+    // Poisson sampler (simple algorithm)
+    function randomPoisson(lambda) {
+      let L = Math.exp(-lambda);
+      let k = 0;
+      let p = 1;
+      do {
+        k++;
+        p *= Math.random();
+      } while (p > L);
+      return k - 1;
+    }
+    // Gamma sampler (Marsaglia and Tsang method)
+    function randomGamma(shape, scale) {
+      if(shape < 1) {
+        return randomGamma(1 + shape, scale) * Math.pow(Math.random(), 1/shape);
+      }
+      const d = shape - 1/3;
+      const c = 1 / Math.sqrt(9*d);
+      while (true) {
+        let x = 0;
+        let v = 0;
+        do {
+          x = randn();
+          v = 1 + c * x;
+        } while (v <= 0);
+        v = v * v * v;
+        const u = Math.random();
+        if (u < 1 - 0.331 * Math.pow(x, 4)) return d * v * scale;
+        if (Math.log(u) < 0.5 * x*x + d * (1 - v + Math.log(v))) return d * v * scale;
+      }
+    }
+    // Standard normal sampler using Box-Muller
+    function randn() {
+      let u = 0, v = 0;
+      while(u === 0) u = Math.random();
+      while(v === 0) v = Math.random();
+      return Math.sqrt(-2.0 * Math.log(u)) * Math.cos(2.0 * Math.PI * v);
+    }
+
+    /* ---------- KDE Function ---------- */
+    function computeKDE(data, bandwidth, xRange, numPoints) {
+      let xs = [];
+      let ys = [];
+      let step = (xRange[1]-xRange[0]) / numPoints;
+      for(let i = 0; i <= numPoints; i++){
+        let x = xRange[0] + i*step;
+        let sum = 0;
+        for(let j=0; j<data.length; j++){
+          let u = (x - data[j]) / bandwidth;
+          sum += Math.exp(-0.5*u*u) / Math.sqrt(2*Math.PI);
+        }
+        xs.push(x);
+        ys.push(sum / (data.length * bandwidth));
+      }
+      return {x: xs, y: ys};
+    }
+
+    /* ---------- Update Functions for Each Distribution ---------- */
+
+    // Discrete:
+    function updateBernoulli() {
+      const p = parseFloat(document.getElementById("bernoulli-p").value);
+      document.getElementById("bernoulli-p-val").innerText = p;
+      const x = [0,1];
+      const y = x.map(xi => xi === 0 ? (1-p) : p);
+      const mean = p;
+      const std = Math.sqrt(p*(1-p));
+      document.getElementById("bernoulli-mean").innerText = mean.toFixed(3);
+      document.getElementById("bernoulli-std").innerText = std.toFixed(3);
+      Plotly.newPlot("plot-bernoulli", [{ x, y, type: 'bar' }], { title: "Bernoulli PMF" });
+    }
+    function updateBinomial() {
+      const n = parseInt(document.getElementById("binomial-n").value);
+      const p = parseFloat(document.getElementById("binomial-p").value);
+      document.getElementById("binomial-n-val").innerText = n;
+      document.getElementById("binomial-p-val").innerText = p;
+      const x = [], y = [];
+      for(let k = 0; k <= n; k++){
+        x.push(k);
+        y.push(combination(n, k)*Math.pow(p, k)*Math.pow(1-p, n-k));
+      }
+      const mean = n * p;
+      const std = Math.sqrt(n*p*(1-p));
+      document.getElementById("binomial-mean").innerText = mean.toFixed(3);
+      document.getElementById("binomial-std").innerText = std.toFixed(3);
+      Plotly.newPlot("plot-binomial", [{ x, y, type: 'bar' }], { title: "Binomial PMF" });
+    }
+    function updateGeometric() {
+      const p = parseFloat(document.getElementById("geometric-p").value);
+      document.getElementById("geometric-p-val").innerText = p;
+      const x = [], y = [];
+      for(let k = 1; k <= 20; k++){
+        x.push(k);
+        y.push(p*Math.pow(1-p, k-1));
+      }
+      const mean = 1/p;
+      const std = Math.sqrt((1-p)/(p*p));
+      document.getElementById("geometric-mean").innerText = mean.toFixed(3);
+      document.getElementById("geometric-std").innerText = std.toFixed(3);
+      Plotly.newPlot("plot-geometric", [{ x, y, type: 'bar' }], { title: "Geometric PMF" });
+    }
+    function updateNegBinomial() {
+      const r = parseInt(document.getElementById("negbinomial-r").value);
+      const p = parseFloat(document.getElementById("negbinomial-p").value);
+      document.getElementById("negbinomial-r-val").innerText = r;
+      document.getElementById("negbinomial-p-val").innerText = p;
+      const x = [], y = [];
+      for(let k = 0; k <= 20; k++){
+        x.push(k);
+        y.push(combination(k+r-1, k)*Math.pow(p, r)*Math.pow(1-p, k));
+      }
+      const mean = r*(1-p)/p;
+      const std = Math.sqrt(r*(1-p))/(p);
+      document.getElementById("negbinomial-mean").innerText = mean.toFixed(3);
+      document.getElementById("negbinomial-std").innerText = std.toFixed(3);
+      Plotly.newPlot("plot-negbinomial", [{ x, y, type: 'bar' }], { title: "Negative Binomial PMF" });
+    }
+    function updatePoisson() {
+      const lambda = parseFloat(document.getElementById("poisson-lambda").value);
+      document.getElementById("poisson-lambda-val").innerText = lambda;
+      const x = [], y = [];
+      const maxX = Math.ceil(lambda + 3*Math.sqrt(lambda));
+      for(let k = 0; k <= maxX; k++){
+        x.push(k);
+        y.push(Math.pow(lambda,k)*Math.exp(-lambda)/factorial(k));
+      }
+      const mean = lambda;
+      const std = Math.sqrt(lambda);
+      document.getElementById("poisson-mean").innerText = mean.toFixed(3);
+      document.getElementById("poisson-std").innerText = std.toFixed(3);
+      Plotly.newPlot("plot-poisson", [{ x, y, type: 'bar' }], { title: "Poisson PMF" });
+    }
+    function updateHypergeometric() {
+      const N = parseInt(document.getElementById("hyper-N").value);
+      const K = parseInt(document.getElementById("hyper-K").value);
+      const n = parseInt(document.getElementById("hyper-n").value);
+      document.getElementById("hyper-N-val").innerText = N;
+      document.getElementById("hyper-K-val").innerText = K;
+      document.getElementById("hyper-n-val").innerText = n;
+      const kmin = Math.max(0, n - (N-K));
+      const kmax = Math.min(n, K);
+      const x = [], y = [];
+      for(let k = kmin; k <= kmax; k++){
+        x.push(k);
+        y.push((combination(K, k)*combination(N-K, n-k))/combination(N, n));
+      }
+      const mean = n*(K/N);
+      const variance = n*(K/N)*(1-K/N)*((N-n)/(N-1));
+      document.getElementById("hyper-mean").innerText = mean.toFixed(3);
+      document.getElementById("hyper-std").innerText = Math.sqrt(variance).toFixed(3);
+      Plotly.newPlot("plot-hyper", [{ x, y, type: 'bar' }], { title: "Hypergeometric PMF" });
+    }
+    function updateMultinomial() {
+      const n = parseInt(document.getElementById("multi-n").value);
+      const p1 = parseFloat(document.getElementById("multi-p1").value);
+      const p2 = parseFloat(document.getElementById("multi-p2").value);
+      let p3 = 1 - p1 - p2;
+      if(p3 < 0) p3 = 0;
+      document.getElementById("multi-n-val").innerText = n;
+      document.getElementById("multi-p1-val").innerText = p1;
+      document.getElementById("multi-p2-val").innerText = p2;
+      // Marginal for category 1 is Binomial(n, p1)
+      const x = [], y = [];
+      for(let k = 0; k <= n; k++){
+        x.push(k);
+        y.push(combination(n,k)*Math.pow(p1, k)*Math.pow(1-p1, n-k));
+      }
+      const mean = n*p1;
+      const std = Math.sqrt(n*p1*(1-p1));
+      document.getElementById("multi-mean").innerText = mean.toFixed(3);
+      document.getElementById("multi-std").innerText = std.toFixed(3);
+      Plotly.newPlot("plot-multinomial", [{ x, y, type: 'bar' }], { title: "Multinomial (Marginal for Category 1)" });
+    }
+
+    // Continuous:
+    function updateNormal() {
+      const mu = parseFloat(document.getElementById("normal-mu").value);
+      const sigma = parseFloat(document.getElementById("normal-sigma").value);
+      document.getElementById("normal-mu-val").innerText = mu;
+      document.getElementById("normal-sigma-val").innerText = sigma;
+      const x = [];
+      const y = [];
+      const start = mu - 4*sigma;
+      const end = mu + 4*sigma;
+      const step = (end - start)/100;
+      for(let xi = start; xi <= end; xi += step){
+        x.push(xi);
+        y.push((1/(sigma*Math.sqrt(2*Math.PI)))*Math.exp(-0.5*Math.pow((xi-mu)/sigma,2)));
+      }
+      document.getElementById("normal-mean").innerText = mu.toFixed(3);
+      document.getElementById("normal-std").innerText = sigma.toFixed(3);
+      Plotly.newPlot("plot-normal", [{ x, y, mode:'lines', type:'scatter' }], { title: "Normal PDF" });
+    }
+    function updateExponential() {
+      const lambda = parseFloat(document.getElementById("exponential-lambda").value);
+      document.getElementById("exponential-lambda-val").innerText = lambda;
+      const x = [];
+      const y = [];
+      const maxX = 10/lambda;
+      const step = maxX/100;
+      for(let xi = 0; xi <= maxX; xi += step){
+        x.push(xi);
+        y.push(lambda*Math.exp(-lambda*xi));
+      }
+      const mean = 1/lambda;
+      document.getElementById("exponential-mean").innerText = mean.toFixed(3);
+      document.getElementById("exponential-std").innerText = mean.toFixed(3);
+      Plotly.newPlot("plot-exponential", [{ x, y, mode:'lines', type:'scatter' }], { title: "Exponential PDF" });
+    }
+    function updateUniform() {
+      let a = parseFloat(document.getElementById("uniform-a").value);
+      let b = parseFloat(document.getElementById("uniform-b").value);
+      if(b<=a){ b = a+1; document.getElementById("uniform-b").value = b; }
+      document.getElementById("uniform-a-val").innerText = a;
+      document.getElementById("uniform-b-val").innerText = b;
+      const x = [];
+      const y = [];
+      const step = (b-a)/100;
+      for(let xi = a; xi <= b; xi += step){
+        x.push(xi);
+        y.push(1/(b-a));
+      }
+      const mean = (a+b)/2;
+      const std = (b-a)/Math.sqrt(12);
+      document.getElementById("uniform-mean").innerText = mean.toFixed(3);
+      document.getElementById("uniform-std").innerText = std.toFixed(3);
+      Plotly.newPlot("plot-uniform", [{ x, y, mode:'lines', type:'scatter' }], { title: "Uniform PDF" });
+    }
+    function updateGamma() {
+      const k = parseFloat(document.getElementById("gamma-k").value);
+      const theta = parseFloat(document.getElementById("gamma-theta").value);
+      document.getElementById("gamma-k-val").innerText = k;
+      document.getElementById("gamma-theta-val").innerText = theta;
+      const mean = k*theta;
+      const std = Math.sqrt(k)*theta;
+      document.getElementById("gamma-mean").innerText = mean.toFixed(3);
+      document.getElementById("gamma-std").innerText = std.toFixed(3);
+      const x = [];
+      const y = [];
+      const maxX = mean + 4*std;
+      const step = maxX/100;
+      for(let xi = 0; xi <= maxX; xi += step){
+        x.push(xi);
+        y.push((Math.pow(xi, k-1)*Math.exp(-xi/theta))/(Math.pow(theta, k)*gamma(k)));
+      }
+      Plotly.newPlot("plot-gamma", [{ x, y, mode:'lines', type:'scatter' }], { title: "Gamma PDF" });
+    }
+    function updateBeta() {
+      const alpha = parseFloat(document.getElementById("beta-alpha").value);
+      const betaP = parseFloat(document.getElementById("beta-beta").value);
+      document.getElementById("beta-alpha-val").innerText = alpha;
+      document.getElementById("beta-beta-val").innerText = betaP;
+      const x = [];
+      const y = [];
+      const step = 1/100;
+      for(let xi = 0; xi <= 1; xi += step){
+        x.push(xi);
+        y.push((Math.pow(xi,alpha-1)*Math.pow(1-xi, betaP-1))/betaFunc(alpha, betaP));
+      }
+      const mean = alpha/(alpha+betaP);
+      const variance = (alpha*betaP)/((alpha+betaP)**2*(alpha+betaP+1));
+      const std = Math.sqrt(variance);
+      document.getElementById("beta-mean").innerText = mean.toFixed(3);
+      document.getElementById("beta-std").innerText = std.toFixed(3);
+      Plotly.newPlot("plot-beta", [{ x, y, mode:'lines', type:'scatter' }], { title: "Beta PDF" });
+    }
+    function updateLogNormal() {
+      const mu = parseFloat(document.getElementById("lognormal-mu").value);
+      const sigma = parseFloat(document.getElementById("lognormal-sigma").value);
+      document.getElementById("lognormal-mu-val").innerText = mu;
+      document.getElementById("lognormal-sigma-val").innerText = sigma;
+      const x = [];
+      const y = [];
+      const start = 0.001;
+      const end = Math.exp(mu+3*sigma);
+      const step = (end-start)/100;
+      for(let xi = start; xi <= end; xi += step){
+        x.push(xi);
+        y.push((1/(xi*sigma*Math.sqrt(2*Math.PI)))*Math.exp(-0.5*Math.pow((Math.log(xi)-mu)/sigma,2)));
+      }
+      const mean = Math.exp(mu+sigma*sigma/2);
+      const variance = (Math.exp(sigma*sigma)-1)*Math.exp(2*mu+sigma*sigma);
+      const std = Math.sqrt(variance);
+      document.getElementById("lognormal-mean").innerText = mean.toFixed(3);
+      document.getElementById("lognormal-std").innerText = std.toFixed(3);
+      Plotly.newPlot("plot-lognormal", [{ x, y, mode:'lines', type:'scatter' }], { title: "Log-Normal PDF" });
+    }
+    function updateChiSquare() {
+      const k = parseFloat(document.getElementById("chisq-k").value);
+      document.getElementById("chisq-k-val").innerText = k;
+      const x = [];
+      const y = [];
+      const maxX = k + 4*Math.sqrt(2*k);
+      const step = maxX/100;
+      for(let xi = 0; xi <= maxX; xi += step){
+        x.push(xi);
+        y.push((1/(Math.pow(2,k/2)*gamma(k/2)))*Math.pow(xi, k/2-1)*Math.exp(-xi/2));
+      }
+      document.getElementById("chisq-mean").innerText = k.toFixed(3);
+      document.getElementById("chisq-std").innerText = Math.sqrt(2*k).toFixed(3);
+      Plotly.newPlot("plot-chisq", [{ x, y, mode:'lines', type:'scatter' }], { title: "Chi-Square PDF" });
+    }
+    function updateWeibull() {
+      const k = parseFloat(document.getElementById("weibull-k").value);
+      const lambda = parseFloat(document.getElementById("weibull-lambda").value);
+      document.getElementById("weibull-k-val").innerText = k;
+      document.getElementById("weibull-lambda-val").innerText = lambda;
+      const x = [];
+      const y = [];
+      const maxX = lambda*5;
+      const step = maxX/100;
+      for(let xi = 0; xi <= maxX; xi += step){
+        x.push(xi);
+        y.push((k/lambda)*Math.pow(xi/lambda,k-1)*Math.exp(-Math.pow(xi/lambda,k)));
+      }
+      const mean = lambda*gamma(1+1/k);
+      const variance = lambda*lambda*(gamma(1+2/k)-Math.pow(gamma(1+1/k),2));
+      document.getElementById("weibull-mean").innerText = mean.toFixed(3);
+      document.getElementById("weibull-std").innerText = Math.sqrt(variance).toFixed(3);
+      Plotly.newPlot("plot-weibull", [{ x, y, mode:'lines', type:'scatter' }], { title: "Weibull PDF" });
+    }
+    function updateTStudent() {
+      const nu = parseFloat(document.getElementById("t-nu").value);
+      document.getElementById("t-nu-val").innerText = nu;
+      const x = [];
+      const y = [];
+      const start = -5;
+      const end = 5;
+      const step = (end-start)/100;
+      for(let xi = start; xi <= end; xi += step){
+        x.push(xi);
+        y.push(gamma((nu+1)/2)/(Math.sqrt(nu*Math.PI)*gamma(nu/2))*Math.pow(1+xi*xi/nu, -(nu+1)/2));
+      }
+      let mean = (nu>1)?0:"undefined";
+      let std = (nu>2)?Math.sqrt(nu/(nu-2)):"undefined";
+      document.getElementById("t-mean").innerText = mean;
+      document.getElementById("t-std").innerText = std;
+      Plotly.newPlot("plot-t", [{ x, y, mode:'lines', type:'scatter' }], { title: "Student's t PDF" });
+    }
+    function updateFDistribution() {
+      const d1 = parseFloat(document.getElementById("f-d1").value);
+      const d2 = parseFloat(document.getElementById("f-d2").value);
+      document.getElementById("f-d1-val").innerText = d1;
+      document.getElementById("f-d2-val").innerText = d2;
+      const x = [];
+      const y = [];
+      const start = 0.01;
+      const end = 5;
+      const step = (end-start)/100;
+      for(let xi = start; xi <= end; xi += step){
+        x.push(xi);
+        y.push(Math.sqrt(Math.pow(d1*xi, d1)*Math.pow(d2, d2)/Math.pow(d1*xi+d2, d1+d2))/(xi*betaFunc(d1/2,d2/2)));
+      }
+      let mean = (d2>2)?(d2/(d2-2)).toFixed(3):"undefined";
+      let variance = (d2>4)?(2*d2*d2*(d1+d2-2)/(d1*Math.pow(d2-2,2)*(d2-4))).toFixed(3):"undefined";
+      document.getElementById("f-mean").innerText = mean;
+      document.getElementById("f-std").innerText = (variance!=="undefined")?Math.sqrt(variance).toFixed(3):"undefined";
+      Plotly.newPlot("plot-f", [{ x, y, mode:'lines', type:'scatter' }], { title: "F Distribution PDF" });
+    }
+    // Mixed:
+    function updateZIP() {
+      const pi_val = parseFloat(document.getElementById("zip-pi").value);
+      const lambda = parseFloat(document.getElementById("zip-lambda").value);
+      document.getElementById("zip-pi-val").innerText = pi_val;
+      document.getElementById("zip-lambda-val").innerText = lambda;
+      const x = [];
+      const y = [];
+      const maxX = Math.ceil(lambda+3*Math.sqrt(lambda));
+      for(let k=0; k<=maxX; k++){
+        x.push(k);
+        if(k===0){
+          y.push(pi_val + (1-pi_val)*Math.exp(-lambda));
+        } else {
+          y.push((1-pi_val)* (Math.pow(lambda,k)*Math.exp(-lambda)/factorial(k)));
+        }
+      }
+      const mean = (1-pi_val)*lambda;
+      const variance = (1-pi_val)*lambda*(1+pi_val*lambda);
+      document.getElementById("zip-mean").innerText = mean.toFixed(3);
+      document.getElementById("zip-std").innerText = Math.sqrt(variance).toFixed(3);
+      Plotly.newPlot("plot-zip", [{ x, y, type:'bar' }], { title: "ZIP PMF" });
+    }
+    function updateZINB() {
+      const pi_val = parseFloat(document.getElementById("zinb-pi").value);
+      const r = parseInt(document.getElementById("zinb-r").value);
+      const p = parseFloat(document.getElementById("zinb-p").value);
+      document.getElementById("zinb-pi-val").innerText = pi_val;
+      document.getElementById("zinb-r-val").innerText = r;
+      document.getElementById("zinb-p-val").innerText = p;
+      const x = [];
+      const y = [];
+      const maxX = 20;
+      for(let k=0; k<=maxX; k++){
+        x.push(k);
+        if(k===0){
+          y.push(pi_val + (1-pi_val)* (combination(r-1+0,0)*Math.pow(p, r)*Math.pow(1-p, 0)));
+        } else {
+          y.push((1-pi_val)* combination(k+r-1, k)*Math.pow(p, r)*Math.pow(1-p, k));
+        }
+      }
+      const mean = (1-pi_val)*r*(1-p)/p;
+      const variance = (1-pi_val)*r*(1-p)/(p*p);
+      document.getElementById("zinb-mean").innerText = mean.toFixed(3);
+      document.getElementById("zinb-std").innerText = Math.sqrt(variance).toFixed(3);
+      Plotly.newPlot("plot-zinb", [{ x, y, type:'bar' }], { title: "Zero-Inflated NB PMF" });
+    }
+    function updateSpikedNormal() {
+      const pi_val = parseFloat(document.getElementById("spike-pi").value);
+      const mu = parseFloat(document.getElementById("spike-mu").value);
+      const sigma = parseFloat(document.getElementById("spike-sigma").value);
+      document.getElementById("spike-pi-val").innerText = pi_val;
+      document.getElementById("spike-mu-val").innerText = mu;
+      document.getElementById("spike-sigma-val").innerText = sigma;
+      // For x=0, mass=pi_val; for others, density=(1-pi_val)*Normal
+      const x = [];
+      const y = [];
+      const start = mu - 4*sigma;
+      const end = mu + 4*sigma;
+      const step = (end - start)/100;
+      for(let xi = start; xi <= end; xi += step){
+        x.push(xi);
+        y.push((1-pi_val)*(1/(sigma*Math.sqrt(2*Math.PI)))*Math.exp(-0.5*Math.pow((xi-mu)/sigma,2)));
+      }
+      // Create a separate bar for spike at 0
+      const spike = { x: [0], y: [pi_val], type: 'bar', marker: { color: 'red' }, name: 'Spike at 0' };
+      const line = { x, y, mode:'lines', type:'scatter', name: 'Normal Component' };
+      const mean = (1-pi_val)*mu;
+      const variance = (1-pi_val)*sigma*sigma + pi_val*(1-pi_val)*mu*mu;
+      document.getElementById("spikednormal-mean").innerText = mean.toFixed(3);
+      document.getElementById("spikednormal-std").innerText = Math.sqrt(variance).toFixed(3);
+      Plotly.newPlot("plot-spikednormal", [spike, line], { title: "Spiked Normal Distribution" });
+    }
+    function updateTweedie() {
+      const mu = parseFloat(document.getElementById("tweedie-mu").value);
+      const phi = parseFloat(document.getElementById("tweedie-phi").value);
+      const p_val = parseFloat(document.getElementById("tweedie-p").value);
+      document.getElementById("tweedie-mu-val").innerText = mu;
+      document.getElementById("tweedie-phi-val").innerText = phi;
+      document.getElementById("tweedie-p-val").innerText = p_val;
+      // Calculate parameters for compound Poisson-Gamma:
+      const lambda = Math.pow(mu, (2-p_val))/(phi*(2-p_val));
+      const alpha = (2-p_val)/(p_val-1);
+      const scale = phi*(p_val-1)*Math.pow(mu, (p_val-1));
+      // Simulate 1000 samples
+      const samples = [];
+      const nSamples = 1000;
+      for(let i=0; i<nSamples; i++){
+        const N = randomPoisson(lambda);
+        let sum = 0;
+        for(let j=0; j<N; j++){
+          sum += randomGamma(alpha, scale);
+        }
+        samples.push(sum);
+      }
+      // Compute histogram
+      const trace = {
+        x: samples,
+        type: 'histogram',
+        nbinsx: 30
+      };
+      // Compute sample mean and std
+      const sampleMean = samples.reduce((a,b)=>a+b,0)/nSamples;
+      const sampleVar = samples.reduce((sum, val)=>sum+Math.pow(val-sampleMean,2),0)/nSamples;
+      document.getElementById("tweedie-mean").innerText = sampleMean.toFixed(3);
+      document.getElementById("tweedie-std").innerText = Math.sqrt(sampleVar).toFixed(3);
+      Plotly.newPlot("plot-tweedie", [trace], { title: "Tweedie Distribution (Histogram)" });
+    }
+
+    // Empirical & KDE:
+    function updateEmpirical() {
+      const dataStr = document.getElementById("empirical-data").value;
+      const data = dataStr.split(",").map(s=>parseFloat(s.trim())).filter(x=>!isNaN(x));
+      if(data.length===0) return;
+      const trace = { x: data, type: 'histogram', nbinsx: 20 };
+      const mean = data.reduce((a,b)=>a+b,0)/data.length;
+      const variance = data.reduce((s, x)=> s+Math.pow(x-mean,2),0)/data.length;
+      document.getElementById("empirical-mean").innerText = mean.toFixed(3);
+      document.getElementById("empirical-std").innerText = Math.sqrt(variance).toFixed(3);
+      Plotly.newPlot("plot-empirical", [trace], { title: "Empirical Distribution" });
+      updateKDE(); // update KDE as well
+    }
+    function updateKDE() {
+      const dataStr = document.getElementById("empirical-data").value;
+      const data = dataStr.split(",").map(s=>parseFloat(s.trim())).filter(x=>!isNaN(x));
+      const bw = parseFloat(document.getElementById("kde-bandwidth").value);
+      document.getElementById("kde-bandwidth-val").innerText = bw;
+      if(data.length===0) return;
+      const minData = Math.min(...data);
+      const maxData = Math.max(...data);
+      const kde = computeKDE(data, bw, [minData, maxData], 100);
+      Plotly.newPlot("plot-kde", [{ x: kde.x, y: kde.y, mode:'lines', type:'scatter' }], { title: "KDE" });
+    }
+
+    // Heavy-Tailed:
+    function updatePareto() {
+      const xm = parseFloat(document.getElementById("pareto-xm").value);
+      const alpha = parseFloat(document.getElementById("pareto-alpha").value);
+      document.getElementById("pareto-xm-val").innerText = xm;
+      document.getElementById("pareto-alpha-val").innerText = alpha;
+      const x = [];
+      const y = [];
+      const start = xm;
+      const end = xm*10;
+      const step = (end-start)/100;
+      for(let xi = start; xi <= end; xi += step){
+        x.push(xi);
+        y.push((alpha*Math.pow(xm,alpha))/(Math.pow(xi,alpha+1)));
+      }
+      let mean = (alpha>1)?(alpha*xm/(alpha-1)).toFixed(3):"undefined";
+      let variance = (alpha>2)?(Math.pow(xm,2)*alpha/((alpha-1)**2*(alpha-2))).toFixed(3):"undefined";
+      document.getElementById("pareto-mean").innerText = mean;
+      document.getElementById("pareto-std").innerText = (variance!=="undefined")?Math.sqrt(variance).toFixed(3):"undefined";
+      Plotly.newPlot("plot-pareto", [{ x, y, mode:'lines', type:'scatter' }], { title: "Pareto PDF" });
+    }
+    function updateCauchy() {
+      const x0 = parseFloat(document.getElementById("cauchy-x0").value);
+      const gammaVal = parseFloat(document.getElementById("cauchy-gamma").value);
+      document.getElementById("cauchy-x0-val").innerText = x0;
+      document.getElementById("cauchy-gamma-val").innerText = gammaVal;
+      const x = [];
+      const y = [];
+      const start = x0 - 10*gammaVal;
+      const end = x0 + 10*gammaVal;
+      const step = (end-start)/100;
+      for(let xi = start; xi <= end; xi += step){
+        x.push(xi);
+        y.push(1/(Math.PI*gammaVal*(1+Math.pow((xi-x0)/gammaVal,2))));
+      }
+      Plotly.newPlot("plot-cauchy", [{ x, y, mode:'lines', type:'scatter' }], { title: "Cauchy PDF" });
+    }
+    function updateLevy() {
+      const mu = parseFloat(document.getElementById("levy-mu").value);
+      const c = parseFloat(document.getElementById("levy-c").value);
+      document.getElementById("levy-mu-val").innerText = mu;
+      document.getElementById("levy-c-val").innerText = c;
+      const x = [];
+      const y = [];
+      const start = mu + 0.001;
+      const end = mu + 50;
+      const step = (end - start)/100;
+      for(let xi = start; xi <= end; xi += step){
+        x.push(xi);
+        y.push(Math.sqrt(c/(2*Math.PI)) * Math.exp(-c/(2*(xi-mu)))/Math.pow(xi-mu, 1.5));
+      }
+      Plotly.newPlot("plot-levy", [{ x, y, mode:'lines', type:'scatter' }], { title: "Lévy PDF" });
+    }
+    function updateZipf() {
+      const N = parseInt(document.getElementById("zipf-N").value);
+      const s = parseFloat(document.getElementById("zipf-s").value);
+      document.getElementById("zipf-N-val").innerText = N;
+      document.getElementById("zipf-s-val").innerText = s;
+      const x = [];
+      const y = [];
+      let H = 0;
+      for(let k=1; k<=N; k++){
+        H += 1/Math.pow(k,s);
+      }
+      for(let k=1; k<=N; k++){
+        x.push(k);
+        y.push((1/Math.pow(k,s))/H);
+      }
+      Plotly.newPlot("plot-zipf", [{ x, y, type:'bar' }], { title: "Zipf PMF" });
+    }
+
+    // Special:
+    function updateGumbel() {
+      const mu = parseFloat(document.getElementById("gumbel-mu").value);
+      const beta = parseFloat(document.getElementById("gumbel-beta").value);
+      document.getElementById("gumbel-mu-val").innerText = mu;
+      document.getElementById("gumbel-beta-val").innerText = beta;
+      const x = [];
+      const y = [];
+      const start = mu - 5*beta;
+      const end = mu + 5*beta;
+      const step = (end-start)/100;
+      for(let xi = start; xi <= end; xi += step){
+        x.push(xi);
+        y.push((1/beta)*Math.exp(-(xi-mu)/beta - Math.exp(-(xi-mu)/beta)));
+      }
+      Plotly.newPlot("plot-gumbel", [{ x, y, mode:'lines', type:'scatter' }], { title: "Gumbel PDF" });
+    }
+    function updateLaplace() {
+      const mu = parseFloat(document.getElementById("laplace-mu").value);
+      const b = parseFloat(document.getElementById("laplace-b").value);
+      document.getElementById("laplace-mu-val").innerText = mu;
+      document.getElementById("laplace-b-val").innerText = b;
+      const x = [];
+      const y = [];
+      const start = mu - 10*b;
+      const end = mu + 10*b;
+      const step = (end-start)/100;
+      for(let xi = start; xi <= end; xi += step){
+        x.push(xi);
+        y.push((1/(2*b))*Math.exp(-Math.abs(xi-mu)/b));
+      }
+      Plotly.newPlot("plot-laplace", [{ x, y, mode:'lines', type:'scatter' }], { title: "Laplace PDF" });
+    }
+    function updateRayleigh() {
+      const sigma = parseFloat(document.getElementById("rayleigh-sigma").value);
+      document.getElementById("rayleigh-sigma-val").innerText = sigma;
+      const x = [];
+      const y = [];
+      const start = 0;
+      const end = sigma*5;
+      const step = (end-start)/100;
+      for(let xi = start; xi <= end; xi += step){
+        x.push(xi);
+        y.push((xi/(sigma*sigma))*Math.exp(-xi*xi/(2*sigma*sigma)));
+      }
+      Plotly.newPlot("plot-rayleigh", [{ x, y, mode:'lines', type:'scatter' }], { title: "Rayleigh PDF" });
+    }
+    function updateLogistic() {
+      const mu = parseFloat(document.getElementById("logistic-mu").value);
+      const s = parseFloat(document.getElementById("logistic-s").value);
+      document.getElementById("logistic-mu-val").innerText = mu;
+      document.getElementById("logistic-s-val").innerText = s;
+      const x = [];
+      const y = [];
+      const start = mu - 10*s;
+      const end = mu + 10*s;
+      const step = (end-start)/100;
+      for(let xi = start; xi <= end; xi += step){
+        x.push(xi);
+        const ex = Math.exp(-(xi-mu)/s);
+        y.push(ex/(s*Math.pow(1+ex,2)));
+      }
+      Plotly.newPlot("plot-logistic", [{ x, y, mode:'lines', type:'scatter' }], { title: "Logistic PDF" });
+    }
+    function updateDirichlet() {
+      const a1 = parseFloat(document.getElementById("dirichlet-a1").value);
+      const a2 = parseFloat(document.getElementById("dirichlet-a2").value);
+      const a3 = parseFloat(document.getElementById("dirichlet-a3").value);
+      document.getElementById("dirichlet-a1-val").innerText = a1;
+      document.getElementById("dirichlet-a2-val").innerText = a2;
+      document.getElementById("dirichlet-a3-val").innerText = a3;
+      // Create a grid over the simplex: x1,x2>=0 and x1+x2<=1, x3=1-x1-x2.
+      const x1 = [];
+      const x2 = [];
+      const z = [];
+      const numPoints = 50;
+      for(let i=0; i<=numPoints; i++){
+        for(let j=0; j<=numPoints-i; j++){
+          let xi = i/numPoints;
+          let xj = j/numPoints;
+          x1.push(xi);
+          x2.push(xj);
+          let xk = 1 - xi - xj;
+          z.push((Math.pow(xi, a1-1)*Math.pow(xj, a2-1)*Math.pow(xk, a3-1))/ (betaFunc(a1, a2)*gamma(a3)/gamma(a1+a2+a3)));
+        }
+      }
+      const data = [{
+        x: x1,
+        y: x2,
+        z: z,
+        type: 'contour',
+        colorscale: 'Viridis'
+      }];
+      Plotly.newPlot("plot-dirichlet", data, { title: "Dirichlet Density (Contour)" });
+    }
+
+    // Wishart: No interactive plot implemented.
+
+    // Initialize all on window load
+    function init() {
+      updateBernoulli();
+      updateBinomial();
+      updateGeometric();
+      updateNegBinomial();
+      updatePoisson();
+      updateHypergeometric();
+      updateMultinomial();
+      updateNormal();
+      updateExponential();
+      updateUniform();
+      updateGamma();
+      updateBeta();
+      updateLogNormal();
+      updateChiSquare();
+      updateWeibull();
+      updateTStudent();
+      updateFDistribution();
+      updateZIP();
+      updateZINB();
+      updateSpikedNormal();
+      updateTweedie();
+      updateEmpirical();
+      updateKDE();
+      updatePareto();
+      updateCauchy();
+      updateLevy();
+      updateZipf();
+      updateGumbel();
+      updateLaplace();
+      updateRayleigh();
+      updateLogistic();
+      updateDirichlet();
+    }
+    window.onload = init;
+  </script>
+</body>
+</html>

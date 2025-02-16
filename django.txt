@@ -195,4 +195,99 @@ def index(request):
 
     Template allow us to combine static part (html) with dynamic part (database)
 
-    
+
+# New view for description of each item
+def detail(request, item_id):
+    return HttpResponse("This is item id %s" % item_id)
+
+index.html - linking detail view to index home page
+{% for item in item_list%}
+    <ul>
+        <li>
+            {{ item.id }} -- {{ item.item_name}}
+            <a href="/food/{{ item.id }}> {{ item.id}} -- {{ item.item_desc}}
+        </li>
+    </ul>
+{% endfor %}
+
+
+
+# add to url
+    path('<int:item_id>/', views.deatil, name='detail'),
+
+#test in url by :8000/food/1
+
+# LECTURE 27 - Completing the Detail View 
+def detail(request, item_id):
+    item = Item.object.get(pk=item_id)
+    context = {
+        'item': item,
+    }
+    return HttpResponse("This is item id %s" % item_id)
+
+#Now we need to create a template for detail
+go into templates/food and create detail.html
+<h1> {{ item.item_name}} </h1>
+<h2> {{ item.item_desc}} </h2>
+<h2> {{ item.item_price}} </h2>
+
+#now lets modify the detail view to following
+def detail(request, item_id):
+    item = Item.object.get(pk=item_id)
+    context = {
+        'item': item,
+    }
+    return render(request, 'food/detail.html', context)
+
+#now try url food/1 and you would get detail view
+#problem is that we don't need to manually add id in url do lets add that feature
+# lets go to index.html file
+{% for item in item_list%}
+    <ul>
+        <li>
+           <a href="/food/{{item.id}}> {{ item.id }} -- {{ item.item_name}}
+        </li>
+    </ul>
+{% endfor %}
+
+
+
+
+# since basic is clear and we repeated the practice of making another view and added to url lets beautify it 
+DT - Django template language
+We need tempalting engine like django templating enginer or jinja2
+DTL have its own syntax basically like its own programming language
+variable 
+in DTL is between two curly brackets eg: {{ var }}
+whenever we want to write a control flow logic
+{% %} opening bracket
+
+{% %} closing bracket
+
+#Now we will learn removing hard coded url
+index.html - linking detail view to index home page
+{% for item in item_list%}
+    <ul>
+        <li>
+            {{ item.id }} -- {{ item.item_name}}
+            <a href={% url 'detail' item.id %}> {{ item.id}} -- {{ item.item_desc}}
+        </li>
+    </ul>
+{% endfor %}
+# reason we need to remove hard coded url is bcoz using hard coded make it hardly coupled and make things less flexible
+# if we keep using hard coded then handling the project will be complicated and not a good practice
+
+# Name spacing url
+urls are present in food app which is in bigger project mysite
+we might be working on food and our friend working on order might also have an app and has detail path
+so now django will need to pick one out of two
+so in this scenario we go and add folloiwng to url.pu
+app_name = 'food'
+so now rather than jsut defining url as detail we use food.detail to avoid confusion
+<a href={% url 'detail' item.id %}> {{ item.id}} -- {{ item.item_desc}}
+this is right way of doing it
+<a href={% url 'food:detail' item.id %}> {{ item.id}} -- {{ item.item_desc}}
+
+
+#static files
+

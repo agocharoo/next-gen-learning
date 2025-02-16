@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Django Cheat Sheet</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f9f9f9;
+      color: #333;
+      margin: 20px;
+      line-height: 1.6;
+    }
+    h1, h2, h3 {
+      color: #444;
+    }
+    pre {
+      background: #eee;
+      padding: 10px;
+      border-radius: 5px;
+      overflow-x: auto;
+    }
+    code {
+      font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+    }
+    .note {
+      background: #fffae6;
+      padding: 10px;
+      border-left: 5px solid #ffecb3;
+      margin: 10px 0;
+    }
+    .warning {
+      background: #ffe6e6;
+      padding: 10px;
+      border-left: 5px solid #ff0000;
+      margin: 10px 0;
+    }
+    hr {
+      margin: 40px 0;
+    }
+  </style>
+</head>
+<body>
+  <h1>Django Cheat Sheet</h1>
+
+  <h2>Setup and Installation</h2>
+  <pre><code>python3 --version
+python3 -m venv venv
+source venv/bin/activate
+pip install django
+django-admin startproject mysite .
+python3 manage.py runserver</code></pre>
+  <p class="note"><em>Why python3? If you use python, it might default to Python 2 if installed.</em></p>
+  <pre><code>python3 manage.py startapp food</code></pre>
+
+  <h2>Creating a View</h2>
+  <p><strong>views.py</strong></p>
+  <pre><code>from django.http import HttpResponse
+
+def index(request):
+    return HttpResponse('Hello World')</code></pre>
+  <p>The function in <code>views.py</code> is called a <strong>view</strong> in Django.</p>
+
+  <h2>URL Configuration</h2>
+  <h3>In the Food App (food/urls.py)</h3>
+  <pre><code>from . import views
+from django.urls import path
+
+urlpatterns = [
+    path('', views.index, name='index'),
+]</code></pre>
+  <h3>Linking Food App URLs to the Main Project (mysite/urls.py)</h3>
+  <pre><code>from django.urls import include, path
+from django.contrib import admin
+
+urlpatterns = [
+    path('admin/', admin.site.urls),
+    path('food/', include('food.urls')),
+]</code></pre>
+
+  <h2>Databases and Models</h2>
+  <p>Models are blueprints to create tables. In <code>settings.py</code>, the <code>DATABASES</code> setting defaults to SQLite3 (you can configure any database).</p>
+  <p><strong>Note:</strong> Some installed apps use database tables. You need to apply migrations:</p>
+  <pre><code>python manage.py migrate  # apply migrations</code></pre>
+
+  <p>Create a model in <code>food/models.py</code>:</p>
+  <pre><code>from django.db import models
+
+class Item(models.Model):
+    item_name  = models.CharField(max_length=200)
+    item_desc  = models.CharField(max_length=200)
+    item_price = models.IntegerField()</code></pre>
+  <p>After adding your model, update your app’s configuration in <code>food/apps.py</code> and include it in <code>INSTALLED_APPS</code> as <code>'food.apps.FoodConfig'</code>.</p>
+  <p>Whenever you make changes, run:</p>
+  <pre><code>python manage.py makemigrations food
+python manage.py sqlmigrate food 0001
+python manage.py migrate</code></pre>
+
+  <h2>Adding Data via the Django Shell</h2>
+  <pre><code># Launch the shell
+python manage.py shell
+
+# In the shell:
+from food.models import Item
+
+# Create an empty instance
+a = Item()
+Item.objects.all()
+
+# Create and save a new item
+a = Item(item_name="Pizza", item_desc="Cheesy Pizza", item_price=20)
+a.save()
+a.id  # or a.pk
+
+# Create another item
+b = Item(item_name="Burger", item_desc="American burger", item_price=10)
+b.save()
+b.id  # or b.pk
+
+Item.objects.all()</code></pre>
+  <p>To display items nicely, update your model to include a string representation:</p>
+  <pre><code>from django.db import models
+
+class Item(models.Model):
+    item_name  = models.CharField(max_length=200)
+    item_desc  = models.CharField(max_length=200)
+    item_price = models.IntegerField()
+
+    def __str__(self):
+        return self.item_name</code></pre>
+  <p><strong>Special (Double Underscore) Methods:</strong> Methods like <code>__str__</code> (sometimes called "dunder methods") define how objects behave with built-in operations (e.g., printing).</p>
+
+  <h2>Admin Configuration</h2>
+  <p>Register your model in <code>food/admin.py</code> so it appears in the Django admin panel:</p>
+  <pre><code>from django.contrib import admin
+from .models import Item
+
+admin.site.register(Item)</code></pre>
+  <p>Create a superuser to access the admin:</p>
+  <pre><code>python manage.py createsuperuser</code></pre>
+
+  <h2>Displaying Items</h2>
+  <p>Update your view in <code>views.py</code> to retrieve items from the database:</p>
+  <pre><code>from django.http import HttpResponse
+from .models import Item
+
+def index(request):
+    item_list = Item.objects.all()
+    return HttpResponse(item_list)</code></pre>
+
+  <h2>Using Templates for Styling</h2>
+  <p>Django templates allow you to combine static HTML with dynamic data.</p>
+  <p>Make sure your <code>settings.py</code> includes the proper <code>TEMPLATES</code> configuration.</p>
+  <p>Create the following directory structure:</p>
+  <pre><code>mkdir templates
+cd templates
+mkdir food</code></pre>
+  <p>Create <code>index.html</code> in <code>templates/food/</code> with some basic HTML:</p>
+  <pre><code>&lt;!-- templates/food/index.html --&gt;
+&lt;h1&gt;This is just a template&lt;/h1&gt;</code></pre>
+
+  <h3>Loading Templates in Views</h3>
+  <p>You can load and render templates using Django’s loader:</p>
+  <pre><code>from django.template import loader
+from django.http import HttpResponse
+from .models import Item
+
+def index(request):
+    item_list = Item.objects.all()
+    template = loader.get_template('food/index.html')
+    context = {}
+    return HttpResponse(template.render(context, request))</code></pre>
+
+  <h3>Passing Context Data</h3>
+  <p>Update <code>index.html</code> to loop through items:</p>
+  <pre><code>{% raw %}
+{% for item in item_list %}
+    <ul>
+      <li>{{ item.id }} -- {{ item.item_name }}</li>
+    </ul>
+{% endfor %}
+{% endraw %}</code></pre>
+  <p>Then update your view to pass the context:</p>
+  <pre><code>from django.shortcuts import render
+from .models import Item
+
+def index(request):
+    item_list = Item.objects.all()
+    context = {
+        'item_list': item_list,
+    }
+    return render(request, 'food/index.html', context)</code></pre>
+  <p>This approach lets you combine static HTML with dynamic database content.</p>
+
+  <hr>
+  <p style="font-size: 0.9em;">&copy; 2025 Django Cheat Sheet</p>
+</body>
+</html>

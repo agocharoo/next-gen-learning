@@ -31,3 +31,168 @@ urlpatterns = [
 ]
 
 
+#Databases and model
+Models are blueprint to create tables.
+settings.py - DATBASES (It uses sql lite 3, you can configure any database here)
+
+
+#Installed Apps
+Some of these apps use database tables.
+
+!Warning unapplied migrations
+You have the apps which have database tables and you need to create tables
+python manage.py migrate #apply migrations
+
+migrate look at all the apps in Installed Apps and create tables for the models 
+for the apps
+
+from django.db import models
+class Item(modelsmModel):
+    item_name = models.CharField(max_length = 200)
+    item_desc = models.CharField(max_length = 200)
+    item_price = models.IntegerField()
+
+migrate go to installed apps and create tables for those apps
+Go to installed apps
+Go to you food apps.py
+Class FoodConfig():
+Copy this 
+and go to Installed apps 
+'food.apps.FoodConfig',
+
+Now django understand food app exist
+
+Whenever we make changes we need to convey that so we do that using
+python manage.py makemigrations food
+#Now it looks at apps model and changes and update/creates the model
+now we do
+python manage.py sqlmigrate food 0001
+python manage.py migrate 
+#now database tables are ready
+
+#Adding data
+# Database Abstraction API
+Create Object - Update Object - Delete Object
+
+#python shell
+>python manage.py shell
+from food.models import Item
+a = Item()
+Item.object.all()
+a = Item(item_name="Pizza",item_desc="Cheesy Pizza",item_price=20)
+a.save()
+a.id
+a.pk
+b = Item(item_name="Burger",item_desc="American burger",item_price=10)
+b.save()
+b.id
+b.pk
+Item.object.all()
+# this gives query set but we need to make modification to show string name
+# We need to do string representation
+
+class Item(modelsmModel):
+
+    def __str__(self):
+        return self.item_name
+    item_name = models.CharField(max_length = 200)
+    item_desc = models.CharField(max_length = 200)
+    item_price = models.IntegerField()
+
+    Special (Double Underscore) Methods:
+
+Methods like __str__ are sometimes called "dunder methods" (short for "double underscore").
+They are used to define how objects behave with built-in operations (e.g., printing, adding, iterating).
+You usually don't call these methods directly; instead, Python calls them in response to built-in functions or operations.
+
+#python shell
+>python manage.py shell
+Item.object.all()
+
+
+# MYSITE/FOOD admin.py
+from .models import Item
+#register your model to show in admin
+admin.stie.register(Item)
+
+manage.py createsuperuser
+
+#Show items
+go to views.py
+from .models import Item
+
+
+def index(request):
+    item_list = Item.objects.all()
+    return HttpResponse(item_list)
+
+
+# To style items
+# Use templates
+# Django templates
+
+Settings.py
+TEMPLATES - dajngo.templates #this is the template engine that is used
+
+mkdir templates
+cd templates
+mkdir food
+cd food
+
+index.html
+! hit enter
+<h1> This is just a template </h1>
+
+views.py
+from djanog.template import loader
+
+def index(request):
+    item_list = Item.objects.all()
+    template = loader.get_template('food/index.html)
+    context = {
+
+    }
+    #return HttpResponse(item_list)
+    return HttepResponse(template.render(context, request))
+
+
+#Passing contexxt
+index.html - erase and create new
+{% for item in item_list%}
+    {{ item.id }} -- {{ item.item_name}}
+{% endfor %}
+
+
+def index(request):
+    item_list = Item.objects.all()
+    template = loader.get_template('food/index.html)
+    context = {
+        'item_list':item_list,    
+        #(comma at end is important)
+    }
+    #return HttpResponse(item_list)
+    return HttepResponse(template.render(context, request))
+
+index.html - erase and create new
+{% for item in item_list%}
+    <ul>
+        <li>
+            {{ item.id }} -- {{ item.item_name}}
+        </li>
+    </ul>
+{% endfor %}
+
+from django.shortcuts import render
+def index(request):
+    item_list = Item.objects.all()
+     #template = loader.get_template('food/index.html)
+     # not needed as the return is modified now to take care of it
+    context = {
+        'item_list':item_list,    
+    }
+    return render(request,'food/index.html',context)
+
+
+    Template allow us to combine static part (html) with dynamic part (database)
+
+    

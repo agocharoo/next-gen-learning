@@ -290,4 +290,103 @@ this is right way of doing it
 
 
 #static files
+mysite/foo/static/food
+images, javascript, css
+
+add style.css
+body{
+    background-color: lightyellow:
+}
+
+
+modify index.html file
+Add html boiler plate and add the code into the body
+add link of style.css into head tag
+< link rel="stylesheet", href="{% static 'food/style.css %}>
+
+add following at the top to html file to load the css
+{% load statstatic %}
+
+How Django knows where the static files are
+Installed Apps - django.contrib.staticfiles
+This is the exact same app which allows us to use static files which we have in our django
+
+Settings.py file knows where the static files are located
+STATIC_URL = '/static/'
+you can configure this path for static files.
+
+
+# Creating Navigation bar for website
+# This has nothign to do with django
+# Its html, css, jv using framework called bootstrap
+# This is static part of website and django will handle the dynamic part of website
+# Intent here is to know how static part will interact with dynamic part
+# Bootstrap - Like django its a framework but its for front end, helps us create things easily rather than writing code by ourself
+# CDN bootstrap - Content delivery network
+
+<link
+  href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+  rel="stylesheet"
+  integrity="sha384-9ndCyUa6zE+3f52t8S3gBsq41tkj7NQyl0KXwv+I0TtMBo+YdpHrc/tK4JVOBl1W"
+  crossorigin="anonymous"
+/>
+simply go and paste following in the head of the index.html
+
+To ensure bootstrap is working hit refresh and font of text will change because of bootstrap cdn link
+
+Now in index.html we will create nav bar inside <body>
+# you can manually design the style manually in css or use bootstrap
+<nav class="navbar navbar-dark bg-dark">
+    <a href="#" class="navbar-brand">Food App</a>
+
+    <div class="navbar">
+        <a class="nav-item" href="#">Add Item</a>
+        <a class="nav-item" href="#">Delete Item</a>
+        <a class="nav-item" href="#">View Item</a>
+    </div>
+</nav>
+
+
+you can improve by adding following
+<nav class="navbar navbar-dark bg-dark">
+    <a href="#" class="navbar-brand">Food App</a>
+
+    <div class="navbar">
+        <a class="nav-item nav-link" href="#">Add Item</a>
+        <a class="nav-item nav-link" href="#">Delete Item</a>
+        <a class="nav-item nav-link" href="#">View Item</a>
+    </div>
+</nav>
+
+# ISSUE - This navbar only appears on index.html but not on other webpages
+How to add this navigation bar in detail file
+You can copy paste so that is not a good practice.
+Goes again common software engineering practice i.e. to avoid repetition of code
+
+base.html template
+it will contain all the code taht will be applied to all the other webpages
+
+template/food/base.html
+Get the head of file for style and add into head
+Copy paste navigation bar into body tag
+
+    <nav class="navbar navbar-dark bg-dark">
+        <a href="#" class="navbar-brand">Food App</a>
+
+        <div class="navbar">
+            <a class="nav-item nav-link" href="#">Add Item</a>
+            <a class="nav-item nav-link" href="#">Delete Item</a>
+            <a class="nav-item nav-link" href="#">View Item</a>
+        </div>
+    </nav>
+
+    {%block body %}
+    {% endblock %}
+
+</body>
+
+Now we need to learn how to import into index.html
+
+
+
 

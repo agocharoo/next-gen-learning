@@ -539,3 +539,197 @@ Goes again common software engineering practice i.e. to avoid repetition of code
 {% endblock %}
 
 #now nav bar should be there as well
+
+# Adding Image Field so it will be shown 
+# go to models.py and add following
+# open image in google and copy image address
+
+item_image = models.CharField(max_length=500, default="placeholderFoodImage")
+# search for placeholder food image
+
+#now we need to make migration
+python manage.py makemigration food
+python manage.py  sqlmigrate food 002
+python manage.py migrate
+python manage.py runserver
+# we should see item image field in admin and the default value should be there
+
+#now we need to show item image in index.html
+# we know bootstrap has 12 column so we will make sections
+# we will add offset of 2 to make the sum 12 and it will leave 2 space of left
+{% block body %}
+    {% for item in item_list %}
+
+        <div class="row">
+
+            <div class="col-md-3 offset-md-2"> 
+                <img class="card" hegiht='150px' src="{{ item.item_img}}"/>
+            </div>
+            <div class="col-md-4"> 
+                <h3> {{ item.item_name }} </h3>
+                <h5> {{ item.item_desc }} </h5>  
+                <h6> ${{ item.item_price }} </h6>
+            </div>
+            <div class="col-md-2"> 
+                <a href="{% url 'food:detail' item.id %}" class="btn btn-success">Details</a>
+            </div>
+
+    {% endfor %}
+{% endblock %}
+
+#now go in admin and add the image url for each item
+
+# Lets design the detail view now and edit detail.html
+
+{% extends 'food/base.html' %}
+
+{% block body %}    
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-6"
+            <img height="300px" src="{{ item.item_image}}" class="card />
+        </div>
+        <div class="col-md-6"
+            <h1> {{ item.item_name}} </h1>
+            <h2> {{ item.item_desc}} </h2>
+            <h2> ${{ item.item_price}} </h2>        
+        </div>
+
+
+{% endblock %}
+
+#Now we have successfull design index and html inabove step we just have added bootstrap
+# Added row and columns for controlling view
+
+#Now if we want user to add or delte items then we need to create forms
+# FORMS
+# We will need to add url, create view and create template
+
+# add items
+path('add', view.create_item, name="create_item),
+
+#to create form there is extra step go to food and add forms.py
+#in forms.py
+from django import forms
+from .model import Item
+class ItemForm(forms.ModelForm):
+    class Meta:
+        model = Item
+        fields = ['item_name', 'item_dec', 'item_price', 'item_image']
+        
+# now lets create template
+# lets create item-form.html
+
+<form method="POST">
+    {% csr_token %}
+    {{form}}
+    <button type="submit">Save</button>
+</form>
+
+# We use form tag for forma nd then "POST" because we want to post data and for security reason {% csr_token %}
+# then we have submit button
+# {{form}} is nothing but context that we will pass from views which we have not created so lets create new view
+
+#lets ensure the name of view is same as we have mentioned in urls.py
+def create_item(request):
+    form = ItemForm(request.POST or None)
+    
+    if form.is_valid():
+        form.save()
+        return redirect('food:index)
+
+    return render(request, 'food/item-form.html',{'form':form})
+
+# You will see error in detail.html becauze we need to import some files
+from django.shortcuts import render, redirect
+
+from .forms import ItemForm
+# After this forms should work and now we want to add this form to the Add Item on nav bar lets do that
+base.html
+        <div class="navbar">
+            <a class="nav-item nav-link" href="{ url 'food:create_item' %}">Add Item</a>
+            <a class="nav-item nav-link" href="#">Delete Item</a>
+            <a class="nav-item nav-link" href="#">View Item</a>
+        </div>
+
+# Add item doesn;t look good so lets add styling
+{% extends 'food/base.thml' %}
+{% block body %}
+
+<form method="POST">
+    {% csr_token %}
+    {{form}}
+    <button type="submit">Save</button>
+</form>
+
+{% endblock %}
+
+# What if we want to update the item rather than creating a new one lets do that
+
+# update items, we need to pass on the id 
+    path('update/<int:id>/', view.update_item, name="update_item),
+
+# In case of update we don't need to create form as we will reuse what we created earlier
+        
+# now lets create template
+# lets create item-form.html
+
+#lets ensure the name of view is same as we have mentioned in urls.py
+def update_item(request, id):
+    item = Item.objects.get(id=id)
+    form = ItemForm(request.POST or None, instance=item)
+    if form.is_valid():
+        form.save()
+        return redirect('food:index)
+
+    return render(request, 'food/item-form.html',{'form':form, 'item':item})
+
+
+# Now we can go to :800/food/update/1 and make changes and those should be reflected on webpage
+# But editing url is tedious so lets automate it we want to have a button to be able to edit the item
+# Now lets add delete to path
+#delete
+ path('delete/<int:id>/', view.delete_item, name="delete_item),
+
+#lets create view
+def delete_item(request,id):
+    item = item.onjects.get(id=id)
+
+    if reqest.metho == "POST"
+        item.delete()
+        return redirect('food:index')
+
+    return render(request,'food/item-delete.html',{'item':item})
+
+#now lets create the delete page, but we need to figure out how to delete it so lets add it to detail page
+# we go to detail.html page
+
+{% extends 'food/base.html' %}
+
+{% block body %}    
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-6"
+            <img height="300px" src="{{ item.item_image}}" class="card />
+        </div>
+        <div class="col-md-6"
+            <h1> {{ item.item_name}} </h1>
+            <h2> {{ item.item_desc}} </h2>
+            <h2> ${{ item.item_price}} </h2>  
+            <a href="{% url 'food:delete_item' item.id %}">Delete</a>      
+        </div>
+
+
+{% endblock %}
+
+#you will get error because we have not added a delete template so lets add that
+# create new file item-delete.html
+<form method="POST">
+    {% csrf_token %}
+    <h2> Are you sure you want to delet {{ item.item_name}} </h2>
+    <button type="submit">Confirm</button>
+</form>
+
+#Error in views.py as we should have Item. but we had item.

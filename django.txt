@@ -377,18 +377,26 @@ you can configure this path for static files.
 # Bootstrap - Like django its a framework but its for front end, helps us create things easily rather than writing code by ourself
 # CDN bootstrap - Content delivery network
 
-<link
-  href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
-  rel="stylesheet"
-  integrity="sha384-9ndCyUa6zE+3f52t8S3gBsq41tkj7NQyl0KXwv+I0TtMBo+YdpHrc/tK4JVOBl1W"
-  crossorigin="anonymous"
-/>
-simply go and paste following in the head of the index.html
 
-To ensure bootstrap is working hit refresh and font of text will change because of bootstrap cdn link
+<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">simply go and paste following in the head of the index.html
 
+#To ensure bootstrap is working hit refresh and font of text will change because of bootstrap cdn link
+
+NAV BAR
 Now in index.html we will create nav bar inside <body>
 # you can manually design the style manually in css or use bootstrap
+
+#Add following in the body to create nav bar
+<nav class = "navbar navbar-dark bg-dark">
+</nav
+
+# Lets create class and add our app name
+<nav class = "navbar navbar-dark bg-dark">
+    <a href="#" class="navbar-brand">Food APP </a>    
+</nav
+
+# Now lets create few more nav items
+
 <nav class="navbar navbar-dark bg-dark">
     <a href="#" class="navbar-brand">Food App</a>
 
@@ -400,7 +408,7 @@ Now in index.html we will create nav bar inside <body>
 </nav>
 
 
-you can improve by adding following
+# Now you can improve by adding following
 <nav class="navbar navbar-dark bg-dark">
     <a href="#" class="navbar-brand">Food App</a>
 
@@ -416,12 +424,16 @@ How to add this navigation bar in detail file
 You can copy paste so that is not a good practice.
 Goes again common software engineering practice i.e. to avoid repetition of code
 
-base.html template
-it will contain all the code taht will be applied to all the other webpages
+#base.html template
+#it will contain all the code taht will be applied to all the other webpages
 
-template/food/base.html
-Get the head of file for style and add into head
-Copy paste navigation bar into body tag
+#template/food/base.html
+#Get the head of file for style and add into head
+
+    <link rel="stylesheet" href="{% static 'food/style.css' %}">
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+
+#opy paste navigation bar into body tag
 
     <nav class="navbar navbar-dark bg-dark">
         <a href="#" class="navbar-brand">Food App</a>
@@ -433,13 +445,97 @@ Copy paste navigation bar into body tag
         </div>
     </nav>
 
-    {%block body %}
+    {% block body %}
     {% endblock %}
 
 </body>
 
-Now we need to learn how to import into index.html
+#Now we need to learn how to import into index.html
+# Cut the following portion of code
+    {% for item in item_list %}
+        <ul>
+            <li>
+                <a href="{% url 'food:detail' item.id %}">{{ item.id }} -- {{ item.item_desc }}</a>
+            </li>
+        </ul>
+    {% endfor %}
+
+# Copy paste following in index.html body
+    {% block body %}
+    {% endblock %}
 
 
+# Insert following code in the block created above
+    {% for item in item_list %}
+        <ul>
+            <li>
+                <a href="{% url 'food:detail' item.id %}">{{ item.id }} -- {{ item.item_desc }}</a>
+            </li>
+        </ul>
+    {% endfor %}
 
 
+# Basically what we are doing is in base.html we are telling that there will be 
+# some code we need to show in between the block body
+# In index.html we are showing which portion of code needs to be shown between those blocks
+
+# Now we need to add following at top of index.html
+{% extends 'food/base.html' %}
+
+# We can remove {% load static %} from index.htmla nd place it in base.html
+{% load static %}
+
+# So now what happends is whenever we load index.html it's going to read
+{% extends 'food/base.html' %}
+
+# and then it will go ahead and look for this file
+# Once it reaches the base.html it will see 
+{% load static %}
+
+#and it will load static files and static files are what we have in style.css and bootstrap cdn
+# and after loading those files it will create the nav bar and then 
+# it will encounter 
+    {% block body %}
+    {% endblock %}
+# so now it will go back to index.html and then it will load the code that is present
+# between these tags
+    {% block body %}
+
+    {% for item in item_list %}
+    <ul>
+        <li>
+            <a href="{% url 'food:detail' item.id %}">{{ item.id }} -- {{ item.item_desc }}</a>
+        </li>
+    </ul>
+    {% endfor %}
+
+    {% endblock %}
+
+
+# IN CASE IF YOU FACE ERROR DELTE index.html code and paste following
+{% extends 'food/base.html' %}
+
+{% block body %}
+    {% for item in item_list %}
+    <ul>
+        <li>
+            <a href="{% url 'food:detail' item.id %}">{{ item.id }} -- {{ item.item_desc }}</a>
+        </li>
+    </ul>
+    {% endfor %}
+{% endblock %}
+
+# Now if you go and check detail page
+# You would see that the nav bar is missing
+# update the detail.html to following
+{% extends 'food/base.html' %}
+
+{% block body %}    
+
+<h1> {{ item.item_name}} </h1>
+<h2> {{ item.item_desc}} </h2>
+<h2> {{ item.item_price}} </h2>
+
+{% endblock %}
+
+#now nav bar should be there as well

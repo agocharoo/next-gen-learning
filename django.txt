@@ -2,6 +2,10 @@ python3 --version
 python3 -m venv venv
 source venv/bin/activate
 pip install django
+
+git init
+touch .gitignore
+
 django-admin startproject mysite .
 python3 manage.py runserver  
 (why python3?, if we use python then it will think it’s python 2, if you have python 2 installed)
@@ -47,12 +51,12 @@ migrate look at all the apps in Installed Apps and create tables for the models
 for the apps
 
 from django.db import models
-class Item(modelsmModel):
+class Item(models.Model):
     item_name = models.CharField(max_length = 200)
     item_desc = models.CharField(max_length = 200)
     item_price = models.IntegerField()
 
-migrate go to installed apps and create tables for those apps
+migrate command go to installed apps and create tables for those apps
 Go to installed apps
 Go to you food apps.py
 Class FoodConfig():
@@ -64,10 +68,15 @@ Now django understand food app exist
 
 Whenever we make changes we need to convey that so we do that using
 python manage.py makemigrations food
+#Above syntax looks for all the database files or models and show the changes
 #Now it looks at apps model and changes and update/creates the model
 now we do
 python manage.py sqlmigrate food 0001
+#above syntax stays same regardless of teh database type
+# This will convert the model into sql syntax so that you can see that
+# sql is written correctly and ensure it is good before applying migration
 python manage.py migrate 
+# above will execute all unapplied migrations and actually modifies the database
 #now database tables are ready
 
 #Adding data
@@ -110,14 +119,19 @@ You usually don't call these methods directly; instead, Python calls them in res
 Item.object.all()
 
 
+manage.py createsuperuser
+
 # MYSITE/FOOD admin.py
 from .models import Item
 #register your model to show in admin
 admin.stie.register(Item)
 
-manage.py createsuperuser
+#Now you can login as super user and add or delete or edit items
 
-#Show items
+
+
+
+#Show items on webapp
 go to views.py
 from .models import Item
 
@@ -155,7 +169,7 @@ def index(request):
     #return HttpResponse(item_list)
     return HttepResponse(template.render(context, request))
 
-
+# Now lets show the data into the webpage using template
 #Passing contexxt
 index.html - erase and create new
 {% for item in item_list%}
@@ -182,6 +196,8 @@ index.html - erase and create new
     </ul>
 {% endfor %}
 
+
+#Shortcut method and cleaner method of rendering templates using render directly
 from django.shortcuts import render
 def index(request):
     item_list = Item.objects.all()
@@ -193,38 +209,40 @@ def index(request):
     return render(request,'food/index.html',context)
 
 
-    Template allow us to combine static part (html) with dynamic part (database)
+#Template allow us to combine static part (html) with dynamic part (database)
 
 
 # New view for description of each item
+# We are passing item_id on to the detail webpage so passing this information
 def detail(request, item_id):
     return HttpResponse("This is item id %s" % item_id)
 
-index.html - linking detail view to index home page
-{% for item in item_list%}
-    <ul>
-        <li>
-            {{ item.id }} -- {{ item.item_name}}
-            <a href="/food/{{ item.id }}> {{ item.id}} -- {{ item.item_desc}}
-        </li>
-    </ul>
-{% endfor %}
-
-
-
-# add to url
-    path('<int:item_id>/', views.deatil, name='detail'),
+# Now we need to link it to url
+# Since we need dynamic url for each item we will let url know that
+# we are expecting an integer value
+urlpatterns = [
+    path('', views.index, name='index'),
+    path('<int:item_id>/', views.detail, name = 'detail'),
+]
+#whatever we pass as int as item_id will be passed to views.py detail method
+def detail(request, item_id):
+    return HttpResponse("This is item id %s" % item_id)
 
 #test in url by :8000/food/1
 
-# LECTURE 27 - Completing the Detail View 
+
+# For us to show more information on detail view of item
+# We need to pull information of item but unlike index view 
+# we don't need to pull all the data we just need 1 item data
 def detail(request, item_id):
-    item = Item.object.get(pk=item_id)
+    item = Item.objects.get(pk=item_id)
     context = {
         'item': item,
     }
     return HttpResponse("This is item id %s" % item_id)
 
+#now that we have got context we need to pass it to template so 
+# lets create detail.html template
 #Now we need to create a template for detail
 go into templates/food and create detail.html
 <h1> {{ item.item_name}} </h1>
@@ -233,25 +251,41 @@ go into templates/food and create detail.html
 
 #now lets modify the detail view to following
 def detail(request, item_id):
-    item = Item.object.get(pk=item_id)
+    item = Item.objects.get(pk=item_id)
     context = {
         'item': item,
     }
     return render(request, 'food/detail.html', context)
 
 #now try url food/1 and you would get detail view
+
 #problem is that we don't need to manually add id in url do lets add that feature
 # lets go to index.html file
 {% for item in item_list%}
     <ul>
         <li>
-           <a href="/food/{{item.id}}> {{ item.id }} -- {{ item.item_name}}
+            <a href="/food/{{item.id}}"> {{item.id}} -- {{ item.item_desc}}</a>
         </li>
     </ul>
 {% endfor %}
 
+# reason we need to remove hard coded url is bcoz using hard coded make it hardly coupled and make things less flexible
+# if we keep using hard coded then handling the project will be complicated and not a good practice
+# lets modigy the url and make it flexible
 
+{% for item in item_list%}
+    <ul>
+        <li>
+            <a href="{% url 'detail' item.id %}"> {{item.id}} -- {{ item.item_desc}}</a>
+        </li>
+    </ul>
+{% endfor %}
 
+# From {% url 'detail' %} it knows it needs to go to views.detail
+urlpatterns = [
+    path('', views.index, name='index'),
+    path('<int:item_id>/', views.detail, name = 'detail'),
+]
 
 # since basic is clear and we repeated the practice of making another view and added to url lets beautify it 
 DT - Django template language
@@ -264,48 +298,67 @@ whenever we want to write a control flow logic
 
 {% %} closing bracket
 
-#Now we will learn removing hard coded url
-index.html - linking detail view to index home page
-{% for item in item_list%}
-    <ul>
-        <li>
-            {{ item.id }} -- {{ item.item_name}}
-            <a href={% url 'detail' item.id %}> {{ item.id}} -- {{ item.item_desc}}
-        </li>
-    </ul>
-{% endfor %}
-# reason we need to remove hard coded url is bcoz using hard coded make it hardly coupled and make things less flexible
-# if we keep using hard coded then handling the project will be complicated and not a good practice
+
 
 # Name spacing url
 urls are present in food app which is in bigger project mysite
 we might be working on food and our friend working on order might also have an app and has detail path
 so now django will need to pick one out of two
-so in this scenario we go and add folloiwng to url.pu
+so in this scenario we go and add folloiwng to food apps urls.py
+
 app_name = 'food'
+
 so now rather than jsut defining url as detail we use food.detail to avoid confusion
+
 <a href={% url 'detail' item.id %}> {{ item.id}} -- {{ item.item_desc}}
-this is right way of doing it
+
+below is right way of doing it
+
 <a href={% url 'food:detail' item.id %}> {{ item.id}} -- {{ item.item_desc}}
 
 
 #static files
-mysite/foo/static/food
+lets create static folder similar to templates folder
+
+mysite/food/static/food
 images, javascript, css
 
 add style.css
 body{
-    background-color: lightyellow:
+    background-color: lightyellow;
 }
 
 
 modify index.html file
 Add html boiler plate and add the code into the body
 add link of style.css into head tag
+
 < link rel="stylesheet", href="{% static 'food/style.css %}>
 
+#below is the code of index.html
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Food Items</title>
+    <link rel="stylesheet" href="{% static 'food/style.css' %}">
+</head>
+<body>
+    {% for item in item_list %}
+        <ul>
+            <li>
+                <a href="{% url 'food:detail' item.id %}">{{ item.id }} -- {{ item.item_desc }}</a>
+            </li>
+        </ul>
+    {% endfor %}
+</body>
+</html>
+
+
 add following at the top to html file to load the css
-{% load statstatic %}
+{% load static %}
 
 How Django knows where the static files are
 Installed Apps - django.contrib.staticfiles

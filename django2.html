@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Django Cheat Sheet Extended</title>
+  <title>Django Cheat Sheet</title>
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -42,20 +42,20 @@
   </style>
 </head>
 <body>
-  <h1>Django Cheat Sheet Extended</h1>
+  <h1>Django Cheat Sheet</h1>
 
-  <!-- Previous Content -->
+  <!-- Setup and Installation -->
   <h2>Setup and Installation</h2>
   <pre><code>python3 --version
 python3 -m venv venv
 source venv/bin/activate
 pip install django
 django-admin startproject mysite .
-python3 manage.py runserver</code></pre>
-  <p class="note"><em>Why python3? If you use python, it might default to Python 2 if installed.</em></p>
-  <pre><code>python3 manage.py startapp food</code></pre>
+python3 manage.py runserver  # (Why python3? If you use 'python', it may default to Python 2 if installed)
+python3 manage.py startapp food</code></pre>
 
-  <h2>Creating a View</h2>
+  <!-- Creating a Basic View -->
+  <h2>Creating a Basic View</h2>
   <p><strong>views.py</strong></p>
   <pre><code>from django.http import HttpResponse
 
@@ -63,15 +63,16 @@ def index(request):
     return HttpResponse('Hello World')</code></pre>
   <p>The function in <code>views.py</code> is called a <strong>view</strong> in Django.</p>
 
+  <!-- URL Configuration -->
   <h2>URL Configuration</h2>
-  <h3>In the Food App (food/urls.py)</h3>
+  <h3>In the Food App (<code>food/urls.py</code>)</h3>
   <pre><code>from . import views
-from django.urls import path
+from dajngo.urls import path
 
 urlpatterns = [
     path('', views.index, name='index'),
 ]</code></pre>
-  <h3>Linking Food App URLs to the Main Project (mysite/urls.py)</h3>
+  <h3>Linking Food App URLs to the Main Project (<code>mysite/urls.py</code>)</h3>
   <pre><code>from django.urls import include, path
 from django.contrib import admin
 
@@ -80,27 +81,32 @@ urlpatterns = [
     path('food/', include('food.urls')),
 ]</code></pre>
 
+  <!-- Databases and Models -->
   <h2>Databases and Models</h2>
-  <p>Models are blueprints to create tables. In <code>settings.py</code>, the <code>DATABASES</code> setting defaults to SQLite3 (you can configure any database).</p>
-  <p><strong>Note:</strong> Some installed apps use database tables. You need to apply migrations:</p>
-  <pre><code>python manage.py migrate  # apply migrations</code></pre>
+  <p>Models are blueprints for creating database tables.</p>
+  <p><strong>settings.py</strong> - Look for the <code>DATABASES</code> setting (by default it uses SQLite3, but you can configure any database).</p>
+  <p><strong>Installed Apps:</strong> Some apps use database tables; ensure you have them in your <code>INSTALLED_APPS</code>.</p>
+  <div class="warning">
+    <p><strong>Warning: Unapplied migrations!</strong> You have apps with database tables and you need to create the tables using migrations.</p>
+  </div>
+  <pre><code>python manage.py migrate  # Apply migrations</code></pre>
+  <p>Migrations look at all the apps in <code>INSTALLED_APPS</code> and create tables for the models.</p>
 
-  <p>Create a model in <code>food/models.py</code>:</p>
+  <p><strong>Example Model (<code>food/models.py</code>):</strong></p>
   <pre><code>from django.db import models
 
 class Item(models.Model):
     item_name  = models.CharField(max_length=200)
     item_desc  = models.CharField(max_length=200)
-    item_price = models.IntegerField()
+    item_price = models.IntegerField()</code></pre>
+  <p>After creating your model, update your app’s configuration in <code>food/apps.py</code> (e.g., <code>FoodConfig</code>) and add <code>'food.apps.FoodConfig'</code> to <code>INSTALLED_APPS</code>.</p>
 
-    def __str__(self):
-        return self.item_name</code></pre>
-  <p>After adding your model, update your app’s configuration in <code>food/apps.py</code> and include it in <code>INSTALLED_APPS</code> as <code>'food.apps.FoodConfig'</code>.</p>
-  <p>Whenever you make changes, run:</p>
+  <p>Whenever you make changes to models, run:</p>
   <pre><code>python manage.py makemigrations food
 python manage.py sqlmigrate food 0001
 python manage.py migrate</code></pre>
 
+  <!-- Adding Data via Django Shell -->
   <h2>Adding Data via the Django Shell</h2>
   <pre><code># Launch the shell
 python manage.py shell
@@ -108,199 +114,171 @@ python manage.py shell
 # In the shell:
 from food.models import Item
 
-# Create and save new items:
+# Create an empty instance
+a = Item()
+Item.objects.all()
+
+# Create and save a new item
 a = Item(item_name="Pizza", item_desc="Cheesy Pizza", item_price=20)
 a.save()
-print(a.id)  # or a.pk
+a.id  # or a.pk
 
-b = Item(item_name="Burger", item_desc="American Burger", item_price=10)
+# Create another item
+b = Item(item_name="Burger", item_desc="American burger", item_price=10)
 b.save()
+b.id  # or b.pk
 
-# Retrieve all items:
-print(Item.objects.all())</code></pre>
+Item.objects.all()</code></pre>
+  <p>To display items nicely, add a string representation to your model:</p>
+  <pre><code>class Item(models.Model):
+    item_name  = models.CharField(max_length=200)
+    item_desc  = models.CharField(max_length=200)
+    item_price = models.IntegerField()
 
+    def __str__(self):
+        return self.item_name</code></pre>
+  <p><strong>Note on Dunder Methods:</strong> Methods like <code>__str__</code> (double underscore) define how objects behave with built-in operations (e.g., printing).</p>
+
+  <!-- Admin Configuration -->
   <h2>Admin Configuration</h2>
-  <p>Register your model in <code>food/admin.py</code> so it appears in the Django admin panel:</p>
+  <p>Register your model in <code>food/admin.py</code> so it appears in the Django admin:</p>
   <pre><code>from django.contrib import admin
 from .models import Item
 
 admin.site.register(Item)</code></pre>
-  <p>Create a superuser to access the admin:</p>
+  <p>Create a superuser using:</p>
   <pre><code>python manage.py createsuperuser</code></pre>
 
-  <h2>Displaying Items with Templates</h2>
-  <p>Update your view in <code>views.py</code> to retrieve items from the database and render a template:</p>
+  <!-- Displaying Items in a View -->
+  <h2>Displaying Items in a View</h2>
+  <p>Update your view (<code>views.py</code>) to retrieve and display items:</p>
+  <pre><code>from django.http import HttpResponse
+from .models import Item
+
+def index(request):
+    item_list = Item.objects.all()
+    return HttpResponse(item_list)</code></pre>
+
+  <!-- Using Templates -->
+  <h2>Using Templates</h2>
+  <p>Django templates allow you to combine static HTML with dynamic database data.</p>
+  <p><strong>Template Engine:</strong> In <code>settings.py</code>, the <code>TEMPLATES</code> setting uses Django’s templating engine.</p>
+  <p>Create the following directory structure:</p>
+  <pre><code>mkdir templates
+cd templates
+mkdir food</code></pre>
+  <p>Create a simple template (<code>templates/food/index.html</code>):</p>
+  <pre><code>&lt;h1&gt;This is just a template&lt;/h1&gt;</code></pre>
+  <p>Loading a template in <code>views.py</code> using the loader:</p>
+  <pre><code>from django.template import loader
+from django.http import HttpResponse
+from .models import Item
+
+def index(request):
+    item_list = Item.objects.all()
+    template = loader.get_template('food/index.html')
+    context = {}
+    return HttpResponse(template.render(context, request))</code></pre>
+
+  <h3>Passing Context to Templates</h3>
+  <p>Update <code>index.html</code> to display items:</p>
+  <pre><code>{% raw %}
+{% for item in item_list %}
+    {{ item.id }} -- {{ item.item_name }}
+{% endfor %}
+{% endraw %}</code></pre>
+  <p>And modify the view to pass the context:</p>
   <pre><code>from django.shortcuts import render
 from .models import Item
 
 def index(request):
     item_list = Item.objects.all()
-    context = {
-        'item_list': item_list,
-    }
+    context = { 'item_list': item_list }
     return render(request, 'food/index.html', context)</code></pre>
-  <p>Create the template <code>templates/food/index.html</code>:</p>
+  <p>You can further style the output. For example, update <code>index.html</code>:</p>
   <pre><code>{% raw %}
 {% for item in item_list %}
-  <ul>
-    <li>{{ item.id }} -- {{ item.item_name }}</li>
-  </ul>
+    <ul>
+      <li>{{ item.id }} -- {{ item.item_name }}</li>
+    </ul>
 {% endfor %}
 {% endraw %}</code></pre>
 
-  <hr>
-
-  <!-- Extended Content -->
-  <h2>Static File Handling</h2>
-  <p>Django makes it easy to serve static files (CSS, JavaScript, images). Follow these steps:</p>
-  <h3>1. Configure <code>settings.py</code></h3>
-  <pre><code>STATIC_URL = '/static/'
-STATICFILES_DIRS = [
-    BASE_DIR / "static",
-]</code></pre>
-  <h3>2. Create a Static Directory</h3>
-  <p>Create a <code>static</code> folder in your project directory and add your files (e.g., <code>css/styles.css</code>, <code>js/scripts.js</code>, or images).</p>
-  <h3>3. Load Static Files in Templates</h3>
-  <p>At the top of your template file, load static:</p>
-  <pre><code>{% raw %}{% load static %}{% endraw %}
-&lt;link rel="stylesheet" href="{% raw %}{% static 'css/styles.css' %}{% endraw %}"&gt;
-&lt;img src="{% raw %}{% static 'images/logo.png' %}{% endraw %}" alt="Logo"&gt;</code></pre>
-
-  <hr>
-
-  <h2>Working with Forms</h2>
-  <p>Django’s forms simplify processing user input. You can create both <strong>ModelForm</strong> (for models) or regular forms.</p>
-  <h3>Creating a ModelForm</h3>
-  <p>Create a file named <code>forms.py</code> in your app (e.g., <code>food/forms.py</code>):</p>
-  <pre><code>from django import forms
-from .models import Item
-
-class ItemForm(forms.ModelForm):
-    class Meta:
-        model = Item
-        fields = ['item_name', 'item_desc', 'item_price']</code></pre>
-  <h3>Using the Form in a View</h3>
-  <p>Create a view to handle displaying and processing the form:</p>
-  <pre><code>from django.shortcuts import render, redirect
-from .forms import ItemForm
-
-def add_item(request):
-    if request.method == 'POST':
-        form = ItemForm(request.POST)
-        if form.is_valid():
-            form.save()
-            return redirect('index')
-    else:
-        form = ItemForm()
-    return render(request, 'food/add_item.html', {'form': form})</code></pre>
-  <h3>Creating the Template</h3>
-  <p>Create <code>templates/food/add_item.html</code>:</p>
+  <!-- Detail View for Each Item -->
+  <h2>Detail View for Each Item</h2>
+  <p>Create a new view to show details of an item:</p>
+  <pre><code>def detail(request, item_id):
+    return HttpResponse("This is item id %s" % item_id)</code></pre>
+  <p>Link this detail view from your <code>index.html</code> (example with hard-coded URL):</p>
   <pre><code>{% raw %}
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Add New Item</title>
-    {% load static %}
-    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
-</head>
-<body>
-    <h1>Add New Item</h1>
-    <form method="post">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Add Item</button>
-    </form>
-</body>
-</html>
+{% for item in item_list %}
+    <ul>
+      <li>
+        {{ item.id }} -- {{ item.item_name }}
+        <a href="/food/{{ item.id }}"> {{ item.id }} -- {{ item.item_desc }} </a>
+      </li>
+    </ul>
+{% endfor %}
 {% endraw %}</code></pre>
-
-  <hr>
-
-  <h2>User Registration &amp; Authentication</h2>
-  <p>Django provides built-in authentication views and forms to handle user login, logout, and registration.</p>
-  
-  <h3>1. User Registration</h3>
-  <p>Create a signup view using Django’s built-in <code>UserCreationForm</code>:</p>
-  <pre><code>from django.contrib.auth.forms import UserCreationForm
-from django.contrib.auth import login, authenticate
-from django.shortcuts import render, redirect
-
-def signup(request):
-    if request.method == 'POST':
-        form = UserCreationForm(request.POST)
-        if form.is_valid():
-            form.save()
-            # Automatically log in the new user
-            username = form.cleaned_data.get('username')
-            raw_password = form.cleaned_data.get('password1')
-            user = authenticate(username=username, password=raw_password)
-            login(request, user)
-            return redirect('index')
-    else:
-        form = UserCreationForm()
-    return render(request, 'registration/signup.html', {'form': form})</code></pre>
-  <p>Create a template for signup at <code>templates/registration/signup.html</code>:</p>
-  <pre><code>{% raw %}
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Sign Up</title>
-    {% load static %}
-    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
-</head>
-<body>
-    <h1>Sign Up</h1>
-    <form method="post">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Sign Up</button>
-    </form>
-</body>
-</html>
-{% endraw %}</code></pre>
-  <p>Then, add the signup URL in your app’s <code>urls.py</code> (or the project’s <code>urls.py</code>):</p>
-  <pre><code>from django.urls import path
-from . import views
+  <p>Add the detail path to <code>food/urls.py</code>:</p>
+  <pre><code>from . import views
+from django.urls import path
 
 urlpatterns = [
-    # ... other url patterns
-    path('signup/', views.signup, name='signup'),
+    path('', views.index, name='index'),
+    path('<int:item_id>/', views.detail, name='detail'),
 ]</code></pre>
+  <p>Enhance the detail view to use a template (<code>templates/food/detail.html</code>):</p>
+  <pre><code>def detail(request, item_id):
+    item = Item.objects.get(pk=item_id)
+    context = { 'item': item }
+    return render(request, 'food/detail.html', context)</code></pre>
+  <p>Create the template <code>detail.html</code>:</p>
+  <pre><code>&lt;h1&gt;{{ item.item_name }}&lt;/h1&gt;
+&lt;h2&gt;{{ item.item_desc }}&lt;/h2&gt;
+&lt;h2&gt;{{ item.item_price }}&lt;/h2&gt;</code></pre>
 
-  <h3>2. Login and Logout</h3>
-  <p>Django provides built-in views for login and logout. In your project’s <code>urls.py</code>, include:</p>
-  <pre><code>from django.contrib.auth import views as auth_views
+  <h3>Linking to the Detail View</h3>
+  <p>Instead of hard-coding URLs in your <code>index.html</code>, use Django’s URL templatetag:</p>
+  <pre><code>{% raw %}
+{% for item in item_list %}
+    <ul>
+      <li>
+        {{ item.id }} -- {{ item.item_name }}
+        <a href="{% url 'detail' item.id %}"> {{ item.id }} -- {{ item.item_desc }} </a>
+      </li>
+    </ul>
+{% endfor %}
+{% endraw %}</code></pre>
+  <p><strong>Note:</strong> Hard-coded URLs can lead to tightly coupled code and make project maintenance harder.</p>
+
+  <!-- Namespacing URLs -->
+  <h2>Namespacing URLs</h2>
+  <p>If multiple apps have similar URL names (e.g., <code>detail</code>), add an <code>app_name</code> to <code>food/urls.py</code>:</p>
+  <pre><code>app_name = 'food'
 
 urlpatterns = [
-    # ... your other url patterns
-    path('login/', auth_views.LoginView.as_view(template_name='registration/login.html'), name='login'),
-    path('logout/', auth_views.LogoutView.as_view(next_page='index'), name='logout'),
+    path('', views.index, name='index'),
+    path('<int:item_id>/', views.detail, name='detail'),
 ]</code></pre>
-  <p>Create a login template at <code>templates/registration/login.html</code>:</p>
+  <p>Now reference the detail URL with the namespace:</p>
   <pre><code>{% raw %}
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Login</title>
-    {% load static %}
-    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
-</head>
-<body>
-    <h1>Login</h1>
-    <form method="post">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Login</button>
-    </form>
-    <p>Don't have an account? <a href="{% url 'signup' %}">Sign up here</a>.</p>
-</body>
-</html>
+<a href="{% url 'food:detail' item.id %}">{{ item.id }} -- {{ item.item_desc }}</a>
 {% endraw %}</code></pre>
-  <p>Finally, add redirection settings in <code>settings.py</code>:</p>
-  <pre><code>LOGIN_REDIRECT_URL = '/'
-LOGOUT_REDIRECT_URL = '/'</code></pre>
+
+  <!-- Django Template Language (DTL) -->
+  <h2>Django Template Language (DTL)</h2>
+  <p>DTL has its own syntax:</p>
+  <ul>
+    <li>Variables: <code>{{ "{{ var }}" }}</code></li>
+    <li>Control flow: Use <code>{% raw %}{% ... %}{% endraw %}</code> tags</li>
+  </ul>
+
+  <!-- Static Files -->
+  <h2>Static Files</h2>
+  <p>Static files (CSS, JavaScript, images) can be managed using Django’s static file handling. Configure <code>STATIC_URL</code> in <code>settings.py</code> and place your files in a static directory.</p>
 
   <hr>
-  <p style="font-size: 0.9em;">&copy; 2025 Django Cheat Sheet Extended</p>
+  <p style="font-size: 0.9em;">&copy; 2025 Django Cheat Sheet</p>
 </body>
 </html>

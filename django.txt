@@ -733,3 +733,40 @@ def delete_item(request,id):
 </form>
 
 #Error in views.py as we should have Item. but we had item.
+
+
+# AUTHENTICATION
+django-admin startapp users
+
+#Add this file to apps
+'users.apps.UsersConfig',
+
+#Create view to register users
+# We don't have to built user form for authentication it's in built in django for you
+
+from django.shortcuts import render
+from django.contrib.aut.form import UserCreationForm
+def register(request):
+    form = UserCreationForm()
+    return render(request, 'user/register.html', {'form':form})
+
+# Create template/users/register.html inside users app folder
+# We always use csrf token with forms in django
+<form method="POST">
+    {% csrf_token %}
+    {{ form }}
+    <button type="submit">Sign Up</botton>
+</form>
+
+#now we need to create url pattern we got to mysite directory and we directly add path there
+from users import views as user_views
+
+path('register/', user_views.register, name='register'),
+
+python manage.py runserver
+#you will get error because of typo - it should be users and not user`
+def register(request):
+    form = UserCreationForm()
+    return render(request, 'users/register.html', {'form':form})
+
+# wheneve user click submit we shall give some msg that user is registered of user password is not correct so lets see that

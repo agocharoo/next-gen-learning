@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pomodoro Planner</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      background: #fdf6e3;
+      padding: 2rem;
+    }
+    h1 {
+      color: #dc322f;
+    }
+    .circle-container {
+      position: relative;
+      width: 220px;
+      height: 220px;
+      margin: 1rem auto;
+    }
+    svg {
+      width: 100%;
+      height: 100%;
+      transform: rotate(-90deg);
+    }
+    .circle-bg {
+      fill: none;
+      stroke: #eee;
+      stroke-width: 10;
+    }
+    .circle-progress {
+      fill: none;
+      stroke: #dc322f;
+      stroke-width: 10;
+      stroke-linecap: round;
+      stroke-dasharray: 628;
+      stroke-dashoffset: 0;
+      transition: stroke-dashoffset 1s linear;
+    }
+    .timer {
+      font-size: 2rem;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      color: #333;
+    }
+    .controls button {
+      padding: 0.5rem 1rem;
+      margin: 0.5rem;
+      font-size: 1rem;
+      cursor: pointer;
+    }
+    .tasks {
+      margin: 2rem auto;
+      max-width: 500px;
+    }
+    .task {
+      margin-bottom: 1rem;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 1rem;
+    }
+    .task input {
+      width: 70%;
+      padding: 0.5rem;
+      font-size: 1rem;
+      border: 2px solid orange;
+      border-radius: 5px;
+    }
+    .task button {
+      padding: 0.5rem 1rem;
+      background-color: orange;
+      border: none;
+      color: white;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    .task.done input {
+      border-color: green;
+      background-color: #e6ffe6;
+    }
+    .task.done button {
+      background-color: green;
+    }
+    .reset-btn {
+      margin-top: 1rem;
+      background-color: #dc322f;
+      color: white;
+      border: none;
+      padding: 0.5rem 1rem;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <h1>Pomodoro Planner</h1>
+
+  <div class="circle-container">
+    <svg viewBox="0 0 220 220">
+      <circle class="circle-bg" cx="110" cy="110" r="100" />
+      <circle class="circle-progress" cx="110" cy="110" r="100" id="progress-circle" />
+    </svg>
+    <div class="timer" id="timer">25:00</div>
+  </div>
+
+  <div class="controls">
+    <button onclick="startTimer()">Start</button>
+    <button onclick="pauseTimer()">Pause</button>
+    <button onclick="resetTimer()">Reset</button>
+  </div>
+
+  <div class="tasks">
+    <h2>Plan Your Pomodoros</h2>
+    <div class="task" id="taskBlock1"><input type="text" id="task1" placeholder="Pomodoro 1 Task..." oninput="saveTasks()"><button onclick="markDone(1)">Done</button></div>
+    <div class="task" id="taskBlock2"><input type="text" id="task2" placeholder="Pomodoro 2 Task..." oninput="saveTasks()"><button onclick="markDone(2)">Done</button></div>
+    <div class="task" id="taskBlock3"><input type="text" id="task3" placeholder="Pomodoro 3 Task..." oninput="saveTasks()"><button onclick="markDone(3)">Done</button></div>
+    <div class="task" id="taskBlock4"><input type="text" id="task4" placeholder="Pomodoro 4 Task..." oninput="saveTasks()"><button onclick="markDone(4)">Done</button></div>
+    <button class="reset-btn" onclick="resetTasks()">Reset Tasks</button>
+  </div>
+
+  <!-- Audio alert -->
+  <audio id="alertSound" src="https://www.soundjay.com/buttons/sounds/beep-07.mp3" preload="auto"></audio>
+
+  <script>
+    let time = 1500;
+    const fullTime = 1500;
+    let timerInterval;
+    let isRunning = false;
+
+    const progressCircle = document.getElementById('progress-circle');
+    const circleLength = 2 * Math.PI * 100;
+    progressCircle.style.strokeDasharray = circleLength;
+    progressCircle.style.strokeDashoffset = 0;
+
+    const alertSound = document.getElementById('alertSound');
+
+    function updateTimerDisplay() {
+      const minutes = Math.floor(time / 60).toString().padStart(2, '0');
+      const seconds = (time % 60).toString().padStart(2, '0');
+      document.getElementById('timer').innerText = `${minutes}:${seconds}`;
+
+      const progress = time / fullTime;
+      progressCircle.style.strokeDashoffset = circleLength * (1 - progress);
+    }
+
+    function startTimer() {
+      if (isRunning) return;
+      isRunning = true;
+
+      const endTime = Date.now() + time * 1000;
+      localStorage.setItem('pomodoroEndTime', endTime);
+
+      timerInterval = setInterval(() => {
+        const remaining = Math.max(0, Math.floor((endTime - Date.now()) / 1000));
+        time = remaining;
+        updateTimerDisplay();
+
+        if (time <= 0) {
+          clearInterval(timerInterval);
+          isRunning = false;
+          localStorage.removeItem('pomodoroEndTime');
+          alertSound.play();
+          alert("Time's up! Take a break or plan your next pomodoro.");
+        }
+      }, 1000);
+    }
+
+    function pauseTimer() {
+      clearInterval(timerInterval);
+      isRunning = false;
+      localStorage.removeItem('pomodoroEndTime');
+    }
+
+    function resetTimer() {
+      clearInterval(timerInterval);
+      isRunning = false;
+      localStorage.removeItem('pomodoroEndTime');
+      time = fullTime;
+      updateTimerDisplay();
+    }
+
+    function resumeTimerIfNeeded() {
+      const savedEnd = localStorage.getItem('pomodoroEndTime');
+      if (savedEnd) {
+        const remaining = Math.max(0, Math.floor((parseInt(savedEnd) - Date.now()) / 1000));
+        if (remaining > 0) {
+          time = remaining;
+          updateTimerDisplay();
+          startTimer();
+        } else {
+          localStorage.removeItem('pomodoroEndTime');
+        }
+      }
+    }
+
+    function resetTasks() {
+      for (let i = 1; i <= 4; i++) {
+        document.getElementById(`task${i}`).value = '';
+        document.getElementById(`taskBlock${i}`).classList.remove('done');
+      }
+      localStorage.removeItem('pomodoroTasks');
+    }
+
+    function markDone(taskNumber) {
+      const block = document.getElementById(`taskBlock${taskNumber}`);
+      block.classList.toggle('done');
+    }
+
+    function saveTasks() {
+      const tasks = {};
+      for (let i = 1; i <= 4; i++) {
+        tasks[`task${i}`] = document.getElementById(`task${i}`).value;
+      }
+      localStorage.setItem('pomodoroTasks', JSON.stringify(tasks));
+    }
+
+    function loadTasks() {
+      const saved = JSON.parse(localStorage.getItem('pomodoroTasks'));
+      if (saved) {
+        for (let i = 1; i <= 4; i++) {
+          document.getElementById(`task${i}`).value = saved[`task${i}`] || '';
+        }
+      }
+    }
+
+    loadTasks();
+    resumeTimerIfNeeded();
+    updateTimerDisplay();
+  </script>
+</body>
+</html>

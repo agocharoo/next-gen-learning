@@ -1,3 +1,6 @@
+# Summary: This module provides core functions for generating random populations, sampling to compute sample means, 
+# plotting distributions, and explaining normality tests for Central Limit Theorem demonstrations.
+
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt

@@ -1,4 +1,6 @@
-# filepath: /Users/m0c013f/Documents/next-gen-learning/Statistic/experiments.py
+# Summary: This module defines the CLTExperiment class for running comprehensive Central Limit Theorem experiments 
+# across multiple distributions and sample sizes. 
+# It generates summary tables, visualizations, and PDF reports, and includes a quick_experiment shortcut for faster testing.
 
 import numpy as np
 import pandas as pd
